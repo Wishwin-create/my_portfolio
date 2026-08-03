@@ -1,0 +1,28 @@
+.navbar-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: transparent;
+  padding: 1rem 0;
+}
+
+.navbar-inner {
+  height: 80px;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .navbar-inner {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-inner {
+    max-width: 95%;
+  }
+}
