@@ -1,5 +1,7 @@
 import Galaxy from '../Galaxy/Galaxy';
 import TextType from '../TextType/TextType';
+import ProfileCard from '../ProfileCard/ProfileCard';
+import avatarImg from '../../assets/my_photo.png';
 
 const Hero = () => {
   return (
@@ -8,13 +10,15 @@ const Hero = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
-        overflow: 'hidden',
+        minHeight: '100svh',
+        height: 'auto',
+        overflow: 'visible',
         background: 'var(--bg)',
         paddingTop: '80px',
+        paddingBottom: '4rem',
       }}
     >
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
         <Galaxy
           mouseRepulsion
           mouseInteraction
@@ -43,8 +47,8 @@ const Hero = () => {
           textAlign: 'left',
           color: 'var(--fg)',
           pointerEvents: 'none',
-           paddingLeft: '5%',
-           paddingTop: '10%',
+          paddingLeft: '5%',
+          paddingTop: '10%',
         }}
       >
         <TextType
@@ -59,8 +63,28 @@ const Hero = () => {
           showCursor
           cursorCharacter="_"
           loop
-          style={{ fontSize: '3rem' }} 
+          style={{ fontSize: '3rem' }}
         />
+
+        {/* ProfileCard — pointerEvents re-enabled so tilt/click work */}
+        <div style={{ pointerEvents: 'auto', marginTop: '2rem', maxWidth: '280px' }}>
+          <ProfileCard
+            name=""
+            title=""
+            handle="Wishwin-create"
+            status="Open to opportunities"
+            contactText="Contact Me"
+            avatarUrl={avatarImg}
+            showUserInfo={true}
+            enableTilt={true}
+            enableMobileTilt={false}
+            onContactClick={() => {
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            behindGlowColor="rgba(255, 255, 255, 0.4)"
+            innerGradient="linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 100%)"
+          />
+        </div>
       </div>
     </section>
   );
