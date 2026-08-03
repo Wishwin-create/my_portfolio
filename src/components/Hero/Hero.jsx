@@ -2,6 +2,7 @@ import Galaxy from '../Galaxy/Galaxy';
 import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import avatarImg from '../../assets/my_photo.png';
+import './Hero.css';
 
 const Hero = () => {
   return (
@@ -36,6 +37,7 @@ const Hero = () => {
       </div>
 
       <div
+        className="hero-content"
         style={{
           position: 'relative',
           zIndex: 1,
@@ -43,12 +45,8 @@ const Hero = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          textAlign: 'left',
           color: 'var(--fg)',
           pointerEvents: 'none',
-          paddingLeft: '5%',
-          paddingTop: '10%',
         }}
       >
         <TextType
@@ -66,8 +64,7 @@ const Hero = () => {
           style={{ fontSize: '3rem' }}
         />
 
-        {/* ProfileCard — pointerEvents re-enabled so tilt/click work */}
-        <div style={{ pointerEvents: 'auto', marginTop: '2rem', maxWidth: '280px' }}>
+        <div className="hero-profile-card" style={{ pointerEvents: 'auto', marginTop: '2rem' }}>
           <ProfileCard
             name=""
             title=""
@@ -84,6 +81,33 @@ const Hero = () => {
             behindGlowColor="rgba(255, 255, 255, 0.4)"
             innerGradient="linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 100%)"
           />
+        </div>
+
+        <div className="hero-bio" style={{ marginTop: '1.5rem', pointerEvents: 'auto' }}>
+          <p
+            className="hero-bio-name"
+            style={{
+              fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
+              fontWeight: '700',
+              color: 'var(--fg)',
+              marginBottom: '0.5rem',
+              cursor: 'default',
+            }}
+          >
+            I'm Wishvin Gesara
+          </p>
+          <p
+            className="hero-bio-text"
+            style={{
+              fontSize: 'clamp(0.9rem, 2vw, 1.05rem)',
+              lineHeight: '1.6',
+              color: 'rgba(255, 255, 255, 0.75)',
+              cursor: 'default',
+            }}
+          >
+            I'm a Full Stack Developer and undergraduate at the University of Colombo.
+            I build modern, responsive web applications with a focus on clean UI and great user experience.
+          </p>
         </div>
       </div>
     </section>

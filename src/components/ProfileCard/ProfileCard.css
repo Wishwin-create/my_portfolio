@@ -333,35 +333,62 @@
 }
 
 .pc-contact-btn {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 12px 20px;
+  min-width: 120px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.08)
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+
+  color: #fff;
+  font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+
   cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
+  pointer-events: auto;
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .pc-contact-btn:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
+  background: linear-gradient(
+    135deg,
+    rgba(88, 166, 255, 0.35),
+    rgba(124, 58, 237, 0.25)
+  );
+  border-color: rgba(255, 255, 255, 0.35);
+
+  box-shadow:
+    0 8px 24px rgba(88, 166, 255, 0.25),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+
+  transform: translateY(-2px) scale(1.03);
 }
 
-.pc-content:not(.pc-avatar-content) {
-  max-height: 100%;
-  overflow: hidden;
-  text-align: center;
-  position: relative;
-  transform: translate3d(
-    calc(var(--pointer-from-left) * -6px + 3px),
-    calc(var(--pointer-from-top) * -6px + 3px),
-    0.1px
-  );
-  z-index: 5;
-  mix-blend-mode: luminosity;
+.pc-contact-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.pc-contact-btn:focus-visible {
+  outline: 2px solid rgba(88, 166, 255, 0.8);
+  outline-offset: 3px;
 }
 
 .pc-details {

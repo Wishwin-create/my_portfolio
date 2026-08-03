@@ -18,7 +18,7 @@
   text-align: left;
   color: var(--fg);
   pointer-events: none;
-  padding-left: 5%;
+  padding-left: clamp(1.5rem, 7vw, 6rem);
   padding-top: 10%;
 }
 
@@ -28,20 +28,103 @@
 
 @media (max-width: 1024px) {
   .hero-content {
-    padding-top: 12%;
+    padding-top: 20%;
   }
 }
 
 @media (max-width: 768px) {
   .hero-content {
-    padding-left: 6%;
+    align-items: center;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
     padding-top: 15%;
   }
 }
 
 @media (max-width: 480px) {
   .hero-content {
-    padding-left: 6%;
     padding-top: 20%;
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-profile-card,
+.hero-bio {
+  width: min(100%, var(--hero-profile-width));
+  max-width: var(--hero-profile-width);
+  box-sizing: border-box;
+}
+
+.hero-profile-card {
+  --hero-profile-width: calc(min(80svh, 540px) * 0.718);
+}
+
+.hero-profile-card .pc-card {
+  width: 100%;
+}
+
+.hero-bio {
+  --hero-profile-width: calc(min(80svh, 540px) * 0.718);
+}
+
+.hero-bio {
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  will-change: transform;
+}
+
+.hero-bio-name {
+  animation: fadeSlideUp 0.8s ease-out 0.3s both;
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: inline-block;
+}
+
+.hero-bio:hover .hero-bio-name {
+  transform: scale(1.03) translateX(4px);
+  color: #ffffff;
+}
+
+.hero-bio-text {
+  animation: fadeSlideUp 0.8s ease-out 0.6s both;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero-bio:hover .hero-bio-text {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .hero-profile-card,
+  .hero-bio {
+    --hero-profile-width: calc(min(70svh, 450px) * 0.718);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-profile-card,
+  .hero-bio {
+    --hero-profile-width: calc(min(60svh, 380px) * 0.718);
+  }
+}
+
+@media (max-width: 320px) {
+  .hero-profile-card,
+  .hero-bio {
+    --hero-profile-width: calc(min(55svh, 320px) * 0.718);
   }
 }
