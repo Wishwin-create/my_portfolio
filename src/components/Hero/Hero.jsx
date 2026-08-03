@@ -44,7 +44,9 @@ const Hero = () => {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
           color: 'var(--fg)',
           pointerEvents: 'none',
         }}
