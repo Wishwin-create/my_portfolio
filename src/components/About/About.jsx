@@ -5,6 +5,7 @@ import {
 } from 'react-icons/si';
 import { FaAws, FaJava } from 'react-icons/fa';
 import './About.css';
+import RotatingText from '../RotatingText/RotatingText';
 
 const skills = [
   'JavaScript', 'React', 'Node.js', 'Express',
@@ -43,6 +44,25 @@ const About = () => {
             ariaLabel="Technologies I work with"
           />
         </div>
+
+        <div className="about-rotating-wrapper">
+  <span className="about-rotating-label">Creative</span>
+  <RotatingText
+    texts={['Thinking', 'Designing', 'Developing']}
+    mainClassName="rotating-text-pill"
+    staggerFrom="last"
+    initial={{ y: '100%' }}
+    animate={{ y: 0 }}
+    exit={{ y: '-120%' }}
+    staggerDuration={0.025}
+    splitLevelClassName="rotating-text-split"
+    transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+    rotationInterval={2000}
+    splitBy="characters"
+    auto
+    loop
+  />
+</div>
 
         <h2 className="about-heading">About Me</h2>
 
