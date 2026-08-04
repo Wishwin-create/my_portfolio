@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Galaxy from '../Galaxy/Galaxy';
 import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
@@ -5,6 +6,27 @@ import avatarImg from '../../assets/my_photo.png';
 import './Hero.css';
 
 const Hero = () => {
+  const bioRef = useRef(null);
+
+  const handleBioMouseMove = (e) => {
+    const el = bioRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -4; // max ~4deg tilt
+    const rotateY = ((x - centerX) / centerX) * 4;
+    el.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleBioMouseLeave = () => {
+    const el = bioRef.current;
+    if (!el) return;
+    el.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg)';
+  };
+
   return (
     <section
       id="home"
@@ -85,7 +107,13 @@ const Hero = () => {
           />
         </div>
 
-        <div className="hero-bio" style={{ marginTop: '1.5rem', pointerEvents: 'auto' }}>
+        <div
+          ref={bioRef}
+          className="hero-bio"
+          style={{ marginTop: '1.5rem', pointerEvents: 'auto' }}
+          onMouseMove={handleBioMouseMove}
+          onMouseLeave={handleBioMouseLeave}
+        >
           <p
             className="hero-bio-name"
             style={{
