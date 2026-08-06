@@ -7,11 +7,8 @@ import { FaAws, FaJava } from 'react-icons/fa';
 import RotatingText from '../RotatingText/RotatingText';
 import { useInView } from '../../hooks/useInView';
 import './About.css';
+import DevCharacter3D from '../DevCharacter3D/DevCharacter3D';
 
-const skills = [
-  'JavaScript', 'React', 'Node.js', 'Express',
-  'Python', 'Java', 'HTML5', 'CSS3', 'MySQL', 'AWS'
-];
 
 const techLogos = [
   { node: <SiJavascript />, title: 'JavaScript', href: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
@@ -30,8 +27,6 @@ const About = () => {
   const [logoRef, logoInView] = useInView(0.2);
   const [headingRef, headingInView] = useInView(0.2);
   const [textRef, textInView] = useInView(0.2);
-  const [eduRef, eduInView] = useInView(0.2);
-  const [skillsRef, skillsInView] = useInView(0.2);
 
   return (
     <section id="about" className="about-section">
@@ -73,41 +68,26 @@ const About = () => {
         <h2 ref={headingRef} className={`about-heading ${headingInView ? 'in-view' : ''}`}>
           About Me
         </h2>
-
-        <div className="about-grid">
-          <div className="about-text" ref={textRef}>
-            <p className={textInView ? 'in-view' : ''}>
-              I'm an ICT undergraduate at the University of Colombo, passionate about
-              building clean, functional, and user-focused web applications. I enjoy
-              working across the full stack — from designing intuitive interfaces to
-              building reliable backend systems.
-            </p>
-            <p className={textInView ? 'in-view' : ''}>
-              I take pride in writing code properly rather than patching quickly,
-              and I'm always looking to deepen my understanding of the tools and
-              systems I work with.
-            </p>
-
-            <div ref={eduRef} className={`about-education ${eduInView ? 'in-view' : ''}`}>
-              <h3>Education</h3>
-              <div className="about-edu-item">
-                <span className="about-edu-degree">BSc in ICT</span>
-                <span className="about-edu-school">University of Colombo</span>
-              </div>
-            </div>
-          </div>
-
-          <div ref={skillsRef} className={`about-skills ${skillsInView ? 'in-view' : ''}`}>
-            <h3>Tech Stack</h3>
-            <div className="about-skills-grid">
-              {skills.map((skill) => (
-                <div key={skill} className="about-skill-chip">
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </div>
+       <div className="about-main-grid">
+        <div className="about-text" ref={textRef}>
+          <p className={textInView ? 'in-view' : ''}>
+            I'm an ICT undergraduate at the University of Colombo, passionate about
+            building clean, functional, and user-focused web applications. I enjoy
+            working across the full stack - from designing intuitive interfaces to
+            building reliable backend systems.
+          </p>
+          <p className={textInView ? 'in-view' : ''}>
+            I take pride in writing code properly rather than patching quickly,
+            and I'm always looking to deepen my understanding of the tools and
+            systems I work with.
+          </p>
         </div>
+
+
+          <div className="about-character-wrapper">
+            <DevCharacter3D />
+          </div>
+      </div>
       </div>
     </section>
   );

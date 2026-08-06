@@ -1,0 +1,16 @@
+.dev-3d-wrapper {
+  width: 100%;
+  height: 460px;
+  cursor: grab;
+  background: #000000;
+}
+
+.dev-3d-wrapper:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 900px) {
+  .dev-3d-wrapper {
+    height: 340px;
+  }
+}
