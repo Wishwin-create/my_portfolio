@@ -4,8 +4,9 @@ import {
   SiPython, SiMysql, SiHtml5, SiCss
 } from 'react-icons/si';
 import { FaAws, FaJava } from 'react-icons/fa';
-import './About.css';
 import RotatingText from '../RotatingText/RotatingText';
+import { useInView } from '../../hooks/useInView';
+import './About.css';
 
 const skills = [
   'JavaScript', 'React', 'Node.js', 'Express',
@@ -26,11 +27,16 @@ const techLogos = [
 ];
 
 const About = () => {
+  const [logoRef, logoInView] = useInView(0.2);
+  const [headingRef, headingInView] = useInView(0.2);
+  const [textRef, textInView] = useInView(0.2);
+  const [eduRef, eduInView] = useInView(0.2);
+  const [skillsRef, skillsInView] = useInView(0.2);
+
   return (
     <section id="about" className="about-section">
       <div className="about-container">
-        {/* Logo loop added above the heading */}
-        <div className="about-logoloop-wrapper">
+        <div ref={logoRef} className={`about-logoloop-wrapper ${logoInView ? 'in-view' : ''}`}>
           <LogoLoop
             logos={techLogos}
             speed={60}
@@ -46,42 +52,43 @@ const About = () => {
         </div>
 
         <div className="about-rotating-wrapper">
-  <span className="about-rotating-label">Creative</span>
-  <RotatingText
-    texts={['Thinking', 'Designing', 'Developing']}
-    mainClassName="rotating-text-pill"
-    staggerFrom="last"
-    initial={{ y: '100%' }}
-    animate={{ y: 0 }}
-    exit={{ y: '-120%' }}
-    staggerDuration={0.025}
-    splitLevelClassName="rotating-text-split"
-    transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-    rotationInterval={2000}
-    splitBy="characters"
-    auto
-    loop
-  />
-</div>
+          <span className="about-rotating-label">Creative</span>
+          <RotatingText
+            texts={['Thinking', 'Designing', 'Developing']}
+            mainClassName="rotating-text-pill"
+            staggerFrom="last"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-120%' }}
+            staggerDuration={0.025}
+            splitLevelClassName="rotating-text-split"
+            transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+            rotationInterval={2000}
+            splitBy="characters"
+            auto
+            loop
+          />
+        </div>
 
-        <h2 className="about-heading">About Me</h2>
+        <h2 ref={headingRef} className={`about-heading ${headingInView ? 'in-view' : ''}`}>
+          About Me
+        </h2>
 
         <div className="about-grid">
-          {/* Left column — narrative */}
-          <div className="about-text">
-            <p>
+          <div className="about-text" ref={textRef}>
+            <p className={textInView ? 'in-view' : ''}>
               I'm an ICT undergraduate at the University of Colombo, passionate about
               building clean, functional, and user-focused web applications. I enjoy
               working across the full stack — from designing intuitive interfaces to
               building reliable backend systems.
             </p>
-            <p>
+            <p className={textInView ? 'in-view' : ''}>
               I take pride in writing code properly rather than patching quickly,
               and I'm always looking to deepen my understanding of the tools and
               systems I work with.
             </p>
 
-            <div className="about-education">
+            <div ref={eduRef} className={`about-education ${eduInView ? 'in-view' : ''}`}>
               <h3>Education</h3>
               <div className="about-edu-item">
                 <span className="about-edu-degree">BSc in ICT</span>
@@ -90,8 +97,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* Right column — skills grid */}
-          <div className="about-skills">
+          <div ref={skillsRef} className={`about-skills ${skillsInView ? 'in-view' : ''}`}>
             <h3>Tech Stack</h3>
             <div className="about-skills-grid">
               {skills.map((skill) => (

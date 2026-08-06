@@ -17,7 +17,13 @@
   margin-bottom: 2.5rem;
   text-align: left;
   opacity: 0;
-  animation: fadeSlideUp 0.8s ease-out both;
+  transform: translateY(20px);
+  transition: opacity 1.3s ease-out, transform 0.8s ease-out;
+}
+
+.about-heading.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .about-grid {
@@ -33,17 +39,30 @@
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1.25rem;
   opacity: 0;
-  animation: fadeSlideUp 0.8s ease-out 0.15s both;
+  transform: translateY(20px);
+  transition: opacity 1.3s ease-out, transform 1.3s ease-out;
 }
 
-.about-text p:nth-of-type(2) {
-  animation-delay: 0.3s;
+.about-text p.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-text p.in-view:nth-of-type(2) {
+  transition-delay: 0.15s;
 }
 
 .about-education {
   margin-top: 2rem;
   opacity: 0;
-  animation: fadeSlideUp 0.8s ease-out 0.45s both;
+  transform: translateY(20px);
+  transition: opacity 1.3s ease-out, transform 1.3s ease-out;
+  transition-delay: 0.3s;
+}
+
+.about-education.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .about-education h3 {
@@ -83,9 +102,15 @@
 /* Skills column */
 .about-skills {
   opacity: 0;
-  animation: fadeSlideUp 0.8s ease-out 0.3s both;
+  transform: translateY(20px);
+  transition: opacity 1.3s ease-out, transform 1.3s ease-out;
+  transition-delay: 0.2s;
 }
 
+.about-skills.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
 .about-skills h3 {
   font-size: 1.1rem;
   font-weight: 700;
@@ -118,15 +143,16 @@
   color: #ffffff;
 }
 
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.about-logoloop-wrapper {
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.3s ease-out, transform 1.3s ease-out;
+}
+
+.about-logoloop-wrapper.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Responsive breakpoints — matching your existing pattern */
