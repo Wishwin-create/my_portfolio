@@ -35,7 +35,7 @@
   .hero-content {
     align-items: center;
     text-align: center;
-    padding: 0 1rem;
+    padding: 1.5rem 1rem;
   }
 }
 
@@ -126,3 +126,14 @@
   }
 }
 
+@media (max-width: 768px) {
+  .hero-section {
+    height: auto;
+    min-height: 0;
+    padding-bottom: 2rem;
+  }
+
+  .hero-content {
+    height: auto;
+  }
+}

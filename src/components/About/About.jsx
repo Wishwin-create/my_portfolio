@@ -81,6 +81,15 @@ const About = () => {
             and I'm always looking to deepen my understanding of the tools and
             systems I work with.
           </p>
+
+          {/*Download CV button */}
+          <a
+            href="/Wishwin_Gesara_CV.pdf"
+            download
+            className={`about-cv-button ${textInView ? 'in-view' : ''}`}
+          >
+            Download CV
+          </a>
         </div>
 
 
