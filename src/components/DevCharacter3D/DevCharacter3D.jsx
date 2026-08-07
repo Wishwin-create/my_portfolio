@@ -149,7 +149,7 @@ const Scene = () => {
 const DevCharacter3D = () => {
   return (
     <div className="dev-3d-wrapper">
-      <Canvas camera={{ position: [2.4, 1.7, 3], fov: 42 }} shadows dpr={[1, 1.8]}>
+      <Canvas camera={{ position: [2.4, 1.7, 3], fov: 42 }} shadows dpr={[1, 1.5]}>
         <color attach="background" args={['#000000']} />
         <Suspense fallback={null}>
           {/* Lighting only — no Environment map, no reflections leaking onto the shadow plane */}
@@ -159,14 +159,14 @@ const DevCharacter3D = () => {
             intensity={1}
             color="#ffffff"
             castShadow
-            shadow-mapSize={[1024, 1024]}
+            shadow-mapSize={[512, 512]}
           />
           <pointLight position={[-2.5, 1.5, -2]} intensity={0.35} color="#ffffff" />
           <pointLight position={[0, 1.2, -0.3]} intensity={0.25} color="#dbeaff" distance={0.9} decay={2} />
 
           <Scene />
 
-          <Sparkles count={30} scale={4} size={2} speed={0.3} opacity={0.2} color="#ffffff" />
+          <Sparkles count={15} scale={4} size={2} speed={0.3} opacity={0.2} color="#ffffff" />
 
           <ContactShadows
             position={[0, -1.05, 0]}
@@ -188,7 +188,7 @@ const DevCharacter3D = () => {
           />
 
           <EffectComposer>
-            <Bloom intensity={0.35} luminanceThreshold={0.65} luminanceSmoothing={0.9} />
+            <Bloom intensity={0.35} luminanceThreshold={0.65} luminanceSmoothing={0.9} mipmapBlur />
             <Vignette eskil={false} offset={0.2} darkness={0.7} />
           </EffectComposer>
         </Suspense>

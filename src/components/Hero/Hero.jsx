@@ -4,10 +4,12 @@ import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import avatarImg from '../../assets/my_photo.png';
 import SocialLinks from '../SocialLinks/SocialLinks';
+import { useInView } from '../../hooks/useInView';
 import './Hero.css';
 
 const Hero = () => {
   const bioRef = useRef(null);
+  const [galaxyRef, galaxyInView] = useInView(0.05);
 
   const handleBioMouseMove = (e) => {
     const el = bioRef.current;
@@ -42,21 +44,23 @@ const Hero = () => {
         paddingBottom: '4rem',
       }}
     >
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-        <Galaxy
-          mouseRepulsion
-          mouseInteraction
-          density={1}
-          glowIntensity={0.3}
-          saturation={0}
-          hueShift={0}
-          twinkleIntensity={0.3}
-          rotationSpeed={0.1}
-          repulsionStrength={2}
-          autoCenterRepulsion={0}
-          starSpeed={0.5}
-          speed={1}
-        />
+      <div ref={galaxyRef} style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
+        {galaxyInView && (
+          <Galaxy
+            mouseRepulsion
+            mouseInteraction
+            density={1}
+            glowIntensity={0.3}
+            saturation={0}
+            hueShift={0}
+            twinkleIntensity={0.3}
+            rotationSpeed={0.1}
+            repulsionStrength={2}
+            autoCenterRepulsion={0}
+            starSpeed={0.5}
+            speed={1}
+          />
+        )}
       </div>
 
       <div

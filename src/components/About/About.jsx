@@ -28,6 +28,7 @@ const About = () => {
   const [logoRef, logoInView] = useInView(0.2);
   const [headingRef, headingInView] = useInView(0.2);
   const [textRef, textInView] = useInView(0.2);
+  const [charRef, charInView] = useInView(0.1); 
 
   return (
     <section id="about" className="about-section">
@@ -94,8 +95,8 @@ const About = () => {
         </div>
 
 
-          <div className="about-character-wrapper">
-            <DevCharacter3D />
+          <div ref={charRef} className="about-character-wrapper">
+             {charInView && <DevCharacter3D />}
           </div>
       </div>
        <EducationJourney />

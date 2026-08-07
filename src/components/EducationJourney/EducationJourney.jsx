@@ -43,33 +43,44 @@ const EducationJourney = () => {
   const [titleRef, titleInView] = useInView(0.3);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
+  let ticking = false;
 
-      const rect = el.getBoundingClientRect();
-      const viewportH = window.innerHeight;
+  const updateJourney = () => {
+    const el = containerRef.current;
+    if (!el) return;
 
-      const total = rect.height - viewportH * 0.5;
-      const scrolled = viewportH * 0.75 - rect.top;
-      const ratio = Math.min(1, Math.max(0, scrolled / total));
-      setProgress(ratio);
+    const rect = el.getBoundingClientRect();
+    const viewportH = window.innerHeight;
 
-      let newActiveIndex = -1;
-      nodeRefs.current.forEach((node, i) => {
-        if (!node) return;
-        const nodeRect = node.getBoundingClientRect();
-        if (nodeRect.top < viewportH * 0.75) {
-          newActiveIndex = i;
-        }
-      });
-      setActiveIndex(newActiveIndex);
-    };
+    const total = rect.height - viewportH * 0.5;
+    const scrolled = viewportH * 0.75 - rect.top;
+    const ratio = Math.min(1, Math.max(0, scrolled / total));
+    setProgress(ratio);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    let newActiveIndex = -1;
+    nodeRefs.current.forEach((node, i) => {
+      if (!node) return;
+      const nodeRect = node.getBoundingClientRect();
+      if (nodeRect.top < viewportH * 0.75) {
+        newActiveIndex = i;
+      }
+    });
+    setActiveIndex(newActiveIndex);
+
+    ticking = false;
+  };
+
+  const handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(updateJourney);
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  updateJourney();
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
 
   return (
     <div className="journey-wrapper" ref={containerRef}>
