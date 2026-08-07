@@ -3,6 +3,7 @@ import Galaxy from '../Galaxy/Galaxy';
 import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import avatarImg from '../../assets/my_photo.png';
+import SocialLinks from '../SocialLinks/SocialLinks';
 import './Hero.css';
 
 const Hero = () => {
@@ -138,6 +139,7 @@ const Hero = () => {
             I'm a Full Stack Developer and undergraduate at the University of Colombo.
             I build modern, responsive web applications with a focus on clean UI and great user experience.
           </p>
+            <SocialLinks />
         </div>
       </div>
     </section>
