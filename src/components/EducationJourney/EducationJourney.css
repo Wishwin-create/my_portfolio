@@ -1,0 +1,222 @@
+.journey-wrapper {
+  position: relative;
+  max-width: 1000px;
+  margin: 5rem auto 0;
+  padding: 0 1rem;
+}
+
+.journey-title {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.journey-track {
+  position: relative;
+}
+
+/* Center vertical line */
+.journey-line-bg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(-50%);
+}
+
+.journey-line-progress {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  background: #ffffff;
+  transform: translateX(-50%);
+  transition: height 0.15s linear;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* Each row: card + center icon + year label */
+.journey-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  opacity: 0.3;
+  transition: opacity 0.6s ease;
+}
+
+.journey-row.active {
+  opacity: 1;
+}
+
+.journey-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Each row always has exactly 3 flex children in DOM order:
+   [side A content] — [icon] — [side B content]
+   We just swap which side holds the card vs the year using 'order' */
+
+.journey-side {
+  flex: 1;
+  display: flex;
+}
+
+.row-left .journey-side.card-side {
+  order: 1;
+  justify-content: flex-end;
+}
+
+.row-left .journey-side.year-side {
+  order: 3;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+}
+
+.row-right .journey-side.card-side {
+  order: 3;
+  justify-content: flex-start;
+}
+
+.row-right .journey-side.year-side {
+  order: 1;
+  justify-content: flex-end;
+  padding-right: 1.5rem;
+}
+
+.journey-node-icon {
+  order: 2;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.journey-row.active .journey-node-icon {
+  border-color: #ffffff;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+}
+
+
+.journey-year {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  transition: color 0.4s ease;
+}
+
+.journey-row.active .journey-year {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Card content */
+.journey-card {
+  width: 420px;           /* fixed width instead of max-width — consistent across all cards */
+  min-height: 220px;      /* ensures shorter cards still occupy similar vertical space */
+  padding: 1.5rem 1.75rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.journey-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.journey-node-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0 0 0.3rem;
+}
+
+.journey-place {
+  display: block;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 1rem;
+}
+
+.journey-detail-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.journey-detail-list li {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Mobile — stack everything into a single left-aligned column */
+@media (max-width: 768px) {
+  .journey-row {
+    gap: 0.75rem;
+  }
+
+  .journey-card {
+    width: 100%;
+    min-height: 0;
+    padding: 1.25rem 1.25rem;
+  }
+
+  .journey-node-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .journey-year {
+    font-size: 0.85rem;
+  }
+
+  .journey-node-title {
+    font-size: 1rem;
+  }
+
+  .journey-place {
+    font-size: 0.8rem;
+  }
+
+  .journey-detail-list li {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-row {
+    gap: 0.5rem;
+  }
+
+  .journey-card {
+    padding: 1rem;
+  }
+
+  .journey-node-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .journey-year {
+    font-size: 0.75rem;
+  }
+}

@@ -8,6 +8,7 @@ import RotatingText from '../RotatingText/RotatingText';
 import { useInView } from '../../hooks/useInView';
 import './About.css';
 import DevCharacter3D from '../DevCharacter3D/DevCharacter3D';
+import EducationJourney from '../EducationJourney/EducationJourney';
 
 
 const techLogos = [
@@ -97,6 +98,7 @@ const About = () => {
             <DevCharacter3D />
           </div>
       </div>
+       <EducationJourney />
       </div>
     </section>
   );
