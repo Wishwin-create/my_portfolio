@@ -2,11 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 import './EducationJourney.css';
 
+import uocLogo from '../../assets/logos/uoc-logo.jpg';
+import slegaLogo from '../../assets/logos/slega-logo.png';
+import mrcLogo from '../../assets/logos/mrc-logo.webp';
+
 const milestones = [
   {
     year: '2024 - Present',
     title: 'Bachelor of Information & Communication Technology',
     place: 'University of Colombo, Faculty of Technology',
+    logo: uocLogo,
     detail: [
       'Coursework spanning software engineering, mobile application development, and programming.',
       'Hands-on project work across full-stack web and Android development.',
@@ -17,6 +22,7 @@ const milestones = [
     year: '2023',
     title: 'Diploma in English Language',
     place: "Sri Lanka English Language Graduates/' Association (SLEGA)",
+    logo: slegaLogo,
     detail: [
       'Completed a comprehensive English language program, enhancing communication skills.',
       'Focused on advanced grammar, vocabulary, and effective writing techniques.'
@@ -27,6 +33,7 @@ const milestones = [
     year: '2022',
     title: 'Advanced Level, Technology Stream',
     place: 'Mahinda Rajapaksa College, Homagama',
+    logo: mrcLogo,
     detail: [
       'Science for Technoloy  - A',
       'Engineering Technology - B',
@@ -113,7 +120,7 @@ const EducationJourney = () => {
       </div>
 
       <div className="journey-node-icon">
-        <span className="journey-dot" />
+         <img src={item.logo} alt={item.place} className="journey-logo-img" />
       </div>
 
       <div className="journey-side year-side">

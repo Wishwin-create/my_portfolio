@@ -93,18 +93,28 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #0a0a0a;
+  background: #ffffff;   /* white backing so logos with transparent bg stay visible */
   border: 2px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  overflow: hidden;
+  padding: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.journey-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .journey-row.active .journey-node-icon {
   border-color: #ffffff;
   box-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
 }
 
 
@@ -181,8 +191,9 @@
   }
 
   .journey-node-icon {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
   }
 
   .journey-year {
@@ -212,8 +223,9 @@
   }
 
   .journey-node-icon {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
+    padding: 5px;
   }
 
   .journey-year {
