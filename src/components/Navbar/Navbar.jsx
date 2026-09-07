@@ -1,4 +1,5 @@
 import GooeyNav from '../GooeyNav/GooeyNav';
+import './Navbar.css';
 
 const Navbar = () => {
   const items = [
@@ -22,18 +23,22 @@ const Navbar = () => {
         background: 'transparent',
         padding: 0,
       }}
-    ><div style={{ height: 'auto', minHeight: '60px', position: 'relative', width: '100%' }}>
-    <GooeyNav
-      items={items}
-      particleCount={15}
-      particleDistances={[90, 10]}
-      particleR={100}
-      initialActiveIndex={0}
-      animationTime={600}
-      timeVariance={300}
-      colors={[1, 2, 3, 4, 1, 2, 3, 4]}
-    />
-  </div>
+    >
+      <div className="navbar-shell">
+        <a className="navbar-brand" href="#home" aria-label="Wishwin home">
+          Wishwin
+        </a>
+        <GooeyNav
+          items={items}
+          particleCount={15}
+          particleDistances={[90, 10]}
+          particleR={100}
+          initialActiveIndex={0}
+          animationTime={600}
+          timeVariance={300}
+          colors={[1, 2, 3, 4, 1, 2, 3, 4]}
+        />
+      </div>
     </header>
   );
 };
