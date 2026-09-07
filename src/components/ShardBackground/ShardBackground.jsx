@@ -10,7 +10,7 @@ const generateShards = (count) => {
     rotation: Math.random() * 360,
     duration: 14 + Math.random() * 10,
     delay: Math.random() * -20,
-    opacity: 0.16 + Math.random() * 0.2,
+    opacity: 0.05 + Math.random() * 0.12,
   }));
 };
 

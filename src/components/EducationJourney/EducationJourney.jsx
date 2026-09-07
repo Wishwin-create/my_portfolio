@@ -49,7 +49,6 @@ const EducationJourney = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const nodeRefs = useRef([]);
   const [titleRef, titleInView] = useInView(0.3);
-  const [sectionRef, sectionInView] = useInView(0.05);
 
   useEffect(() => {
   let ticking = false;
@@ -92,16 +91,14 @@ const EducationJourney = () => {
 }, []);
 
   return (
-    <div className="journey-wrapper" ref={sectionRef}>
-      {sectionInView && <ShardBackground count={14} />}
-
+    <div className="journey-wrapper">
       <div ref={containerRef}>
         <h3 ref={titleRef} className={`journey-title about-heading ${titleInView ? 'in-view' : ''}`}>
           My Education
         </h3>
 
         <div className="journey-track">
-        {sectionInView && <ShardBackground count={14} />}
+        <ShardBackground count={14} />
         <div className="journey-line-bg" />
         <div className="journey-line-progress" style={{ height: `${progress * 100}%` }} />
 
