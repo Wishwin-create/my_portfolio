@@ -1,0 +1,51 @@
+.shard-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shard-piece {
+  position: absolute;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  clip-path: polygon(50% 0%, 100% 35%, 78% 100%, 22% 100%, 0% 35%);
+  filter: blur(0.5px);
+  animation: shard-float linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes shard-float {
+  0% {
+    transform: translate(0, 0) rotate(var(--rot, 0deg)) scale(1);
+  }
+  25% {
+    transform: translate(15px, -25px) rotate(calc(var(--rot, 0deg) + 8deg)) scale(1.03);
+  }
+  50% {
+    transform: translate(-10px, -45px) rotate(calc(var(--rot, 0deg) - 6deg)) scale(0.97);
+  }
+  75% {
+    transform: translate(-20px, -20px) rotate(calc(var(--rot, 0deg) + 4deg)) scale(1.02);
+  }
+  100% {
+    transform: translate(0, 0) rotate(var(--rot, 0deg)) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shard-piece {
+    animation: none;
+  }
+}
+
+/* Reduce shard count visually on small screens by hiding every other one via nth-child */
+@media (max-width: 600px) {
+  .shard-piece:nth-child(even) {
+    display: none;
+  }
+}

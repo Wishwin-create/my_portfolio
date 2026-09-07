@@ -3,15 +3,31 @@
   max-width: 1000px;
   margin: 5rem auto 0;
   padding: 0 1rem;
+  overflow: hidden;
+}
+
+.journey-wrapper > div:not(.shard-bg-wrapper) {
+  position: relative;
+  z-index: 2;
 }
 
 .journey-title {
+  position: relative;
+  z-index: 1;
   text-align: center;
   margin-bottom: 4rem;
 }
 
 .journey-track {
   position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.journey-track > .journey-line-bg,
+.journey-track > .journey-line-progress,
+.journey-track > .journey-row {
+  z-index: 1;
 }
 
 /* Center vertical line */

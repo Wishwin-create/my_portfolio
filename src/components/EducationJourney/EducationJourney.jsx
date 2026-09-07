@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 import './EducationJourney.css';
+import ShardBackground from '../ShardBackground/ShardBackground';
 
 import uocLogo from '../../assets/logos/uoc-logo.jpg';
 import slegaLogo from '../../assets/logos/slega-logo.png';
@@ -48,6 +49,7 @@ const EducationJourney = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const nodeRefs = useRef([]);
   const [titleRef, titleInView] = useInView(0.3);
+  const [sectionRef, sectionInView] = useInView(0.05);
 
   useEffect(() => {
   let ticking = false;
@@ -90,12 +92,16 @@ const EducationJourney = () => {
 }, []);
 
   return (
-    <div className="journey-wrapper" ref={containerRef}>
-      <h3 ref={titleRef} className={`journey-title about-heading ${titleInView ? 'in-view' : ''}`}>
-        My Education
-      </h3>
+    <div className="journey-wrapper" ref={sectionRef}>
+      {sectionInView && <ShardBackground count={14} />}
 
-      <div className="journey-track">
+      <div ref={containerRef}>
+        <h3 ref={titleRef} className={`journey-title about-heading ${titleInView ? 'in-view' : ''}`}>
+          My Education
+        </h3>
+
+        <div className="journey-track">
+        {sectionInView && <ShardBackground count={14} />}
         <div className="journey-line-bg" />
         <div className="journey-line-progress" style={{ height: `${progress * 100}%` }} />
 
@@ -125,11 +131,12 @@ const EducationJourney = () => {
 
       <div className="journey-side year-side">
         <span className="journey-year">{item.year}</span>
+        </div>
       </div>
-    </div>
   );
 })}
       </div>
+    </div>
     </div>
   );
 };
