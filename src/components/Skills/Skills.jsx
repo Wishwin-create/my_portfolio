@@ -5,7 +5,7 @@ import './Skills.css';
 const skillCategories = [
   { label: 'Frontend', items: ['JavaScript', 'React', 'HTML5', 'CSS3'] },
   { label: 'Backend', items: ['Node.js', 'Express', 'Python', 'Java', 'C'] },
-  { label: 'Database', items: ['MySQL', 'MongoDB'] },
+  { label: 'Database', items: ['SQL', 'MongoDB'] },
   { label: 'Cloud & Tools', items: ['AWS'] },
 ];
 

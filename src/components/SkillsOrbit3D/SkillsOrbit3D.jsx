@@ -1,14 +1,13 @@
-import { Suspense, useRef, useMemo, useState } from 'react';
+import { Suspense, useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Html, Float, OrbitControls, Stars } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
+import { Text, Float, Stars } from '@react-three/drei';
 import './SkillsOrbit3D.css';
 
 const innerSkills = [
   { name: 'JavaScript', size: 0.34, color: '#ffffff' },
   { name: 'React', size: 0.46, hasRing: true, color: '#d9d9d9' },
   { name: 'Node.js', size: 0.26, color: '#bdbdbd' },
-  { name: 'MySQL', size: 0.3, color: '#eeeeee' },
+  { name: 'SQL', size: 0.3, color: '#eeeeee' },
 ];
 
 const outerSkills = [
@@ -20,27 +19,25 @@ const outerSkills = [
   { name: 'Express', size: 0.36, color: '#e6e6e6' },
 ];
 
-const Planet = ({ skill, onSelect }) => {
-  const [hovered, setHovered] = useState(false);
-  const meshRef = useRef();
-  const size = skill.size;
+/* Shared drag state — written by the wrapper div, read by OrbitRing in useFrame */
+const drag = {
+  dragging: false,
+  activeOrbit: null,
+  orbits: {},
+};
 
-  useFrame((_, delta) => {
-    if (meshRef.current) meshRef.current.rotation.y += delta * 0.35;
-  });
+const Planet = ({ skill, onSelect }) => {
+  const size = skill.size;
+  const fontSize = size * 0.38;
 
   return (
-    <group
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
-      onPointerOut={() => setHovered(false)}
-      onClick={(e) => { e.stopPropagation(); onSelect(skill); }}
-    >
-      <mesh ref={meshRef} scale={hovered ? 1.15 : 1}>
+    <group onClick={(e) => { e.stopPropagation(); onSelect(skill); }}>
+      <mesh>
         <sphereGeometry args={[size, 32, 32]} />
         <meshStandardMaterial
           color={skill.color}
           emissive={skill.color}
-          emissiveIntensity={hovered ? 0.65 : 0.25}
+          emissiveIntensity={0.25}
           roughness={0.3}
           metalness={0.18}
         />
@@ -53,20 +50,47 @@ const Planet = ({ skill, onSelect }) => {
         </mesh>
       )}
 
-      <Html center distanceFactor={10} position={[0, 0, size]}>
-        <div className={`skill-planet-label ${hovered ? 'hovered' : ''}`}>
-          {skill.name}
-        </div>
-      </Html>
+      <Text
+        position={[0, 0, size + 0.01]}
+        fontSize={fontSize}
+        color="#000000"
+        anchorX="center"
+        anchorY="middle"
+        fontWeight={700}
+        outlineWidth={fontSize * 0.08}
+        outlineColor="#333333"
+      >
+        {skill.name}
+      </Text>
     </group>
   );
 };
 
-const OrbitRing = ({ skills, radius, speed, onSelect }) => {
+const OrbitRing = ({ id, skills, radius, speed, onSelect, onOrbitPointerDown }) => {
   const groupRef = useRef();
+  const baseRotation = useRef(0);
+  const orbitState = useRef(
+    drag.orbits[id] || { offsetX: 0, offsetY: 0, velocityX: 0, velocityY: 0 },
+  );
+
+  useEffect(() => {
+    drag.orbits[id] = orbitState.current;
+  }, [id]);
 
   useFrame((_, delta) => {
-    if (groupRef.current) groupRef.current.rotation.y += delta * speed;
+    /* Auto-rotate slowly + apply mouse drag offset */
+    if (!drag.dragging || drag.activeOrbit !== id) {
+      /* Apply momentum when not dragging */
+      orbitState.current.velocityX *= 0.95;
+      orbitState.current.velocityY *= 0.95;
+      orbitState.current.offsetX += orbitState.current.velocityX;
+      orbitState.current.offsetY += orbitState.current.velocityY;
+    }
+    baseRotation.current += delta * speed;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = baseRotation.current + orbitState.current.offsetX;
+      groupRef.current.rotation.x = orbitState.current.offsetY;
+    }
   });
 
   const positions = useMemo(() => {
@@ -77,13 +101,19 @@ const OrbitRing = ({ skills, radius, speed, onSelect }) => {
   }, [skills, radius]);
 
   return (
-    <group>
+    <group
+      ref={groupRef}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+        onOrbitPointerDown(id, e);
+      }}
+    >
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[radius - 0.006, radius + 0.006, 128]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.18} side={2} />
       </mesh>
 
-      <group ref={groupRef}>
+      <group>
         {skills.map((skill, i) => (
           <group key={skill.name} position={positions[i]}>
             <Planet skill={skill} onSelect={onSelect} />
@@ -105,55 +135,100 @@ const CentralStar = ({ onSelect }) => (
       <meshBasicMaterial color="#ffffff" transparent opacity={0.13} />
     </mesh>
     <pointLight position={[0, 0, 0]} intensity={2.2} color="#ffffff" distance={14} decay={1.4} />
-    <Html center distanceFactor={10}>
-      <div className="skill-hub-label">Skills</div>
-    </Html>
+    <Text
+      position={[0, 0, 0.77]}
+      fontSize={0.28}
+      color="#000000"
+      anchorX="center"
+      anchorY="middle"
+      fontWeight={700}
+      outlineWidth={0.02}
+      outlineColor="#333333"
+    >
+      Skills
+    </Text>
   </group>
 );
 
-const Scene = ({ onSelect }) => (
+const Scene = ({ onSelect, onOrbitPointerDown }) => (
   <Float speed={0.8} rotationIntensity={0.03} floatIntensity={0.2}>
-    <group position={[1.5, 0, 0]}>
+    <group position={[0, 0, 0]}>
       <CentralStar onSelect={onSelect} />
-      <OrbitRing skills={innerSkills} radius={3.2} speed={0.12} onSelect={onSelect} />
-      <OrbitRing skills={outerSkills} radius={5.5} speed={-0.08} onSelect={onSelect} />
+      <OrbitRing id="inner" skills={innerSkills} radius={3.2} speed={0.12} onSelect={onSelect} onOrbitPointerDown={onOrbitPointerDown} />
+      <OrbitRing id="outer" skills={outerSkills} radius={5.5} speed={-0.08} onSelect={onSelect} onOrbitPointerDown={onOrbitPointerDown} />
     </group>
-
-   
   </Float>
 );
 
 const SkillsOrbit3D = () => {
   const [selectedSkill, setSelectedSkill] = useState(null);
+  const wrapperRef = useRef();
+  const pointerRef = useRef({ active: false, lastX: 0, lastY: 0 });
+
+  const onOrbitPointerDown = useCallback((orbitId, e) => {
+    pointerRef.current = { active: true, lastX: e.clientX, lastY: e.clientY };
+    drag.activeOrbit = orbitId;
+    drag.dragging = true;
+    drag.orbits[orbitId].velocityX = 0;
+    drag.orbits[orbitId].velocityY = 0;
+  }, []);
+
+  const onPointerDown = useCallback((e) => {
+    pointerRef.current = { active: true, lastX: e.clientX, lastY: e.clientY };
+    drag.activeOrbit = null;
+    drag.dragging = true;
+    Object.values(drag.orbits).forEach((orbit) => {
+      orbit.velocityX = 0;
+      orbit.velocityY = 0;
+    });
+  }, []);
+
+  const onPointerMove = useCallback((e) => {
+    if (!pointerRef.current.active) return;
+    const deltaX = e.clientX - pointerRef.current.lastX;
+    const deltaY = e.clientY - pointerRef.current.lastY;
+    const targetOrbits = drag.activeOrbit
+      ? [drag.orbits[drag.activeOrbit]]
+      : Object.values(drag.orbits);
+    targetOrbits.forEach((orbit) => {
+      orbit.offsetX += deltaX * 0.008;
+      orbit.offsetY += deltaY * 0.008;
+      orbit.velocityX = deltaX * 0.008;
+      orbit.velocityY = deltaY * 0.008;
+    });
+    pointerRef.current.lastX = e.clientX;
+    pointerRef.current.lastY = e.clientY;
+  }, []);
+
+  const onPointerUp = useCallback(() => {
+    pointerRef.current.active = false;
+    drag.dragging = false;
+    drag.activeOrbit = null;
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+  }, [onPointerMove, onPointerUp]);
 
   return (
-    <div className="skills-orbit-wrapper">
-      <Canvas camera={{ position: [0, 5.5, 11], fov: 42 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }}>
-        <fog attach="fog" args={['#080808', 8, 22]} />
+    <div className="skills-orbit-wrapper" ref={wrapperRef} onPointerDown={onPointerDown}>
+      <Canvas camera={{ position: [0, 5.5, 11], fov: 42 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }} style={{ background: 'transparent' }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[3, 4, 2]} intensity={0.65} color="#ffffff" />
-          <Stars radius={28} depth={20} count={750} factor={1.8} saturation={0.7} fade speed={0.35} />
+          <Stars radius={28} depth={20} count={750} factor={1.8} saturation={0} fade speed={0.35} />
 
-          <Scene onSelect={setSelectedSkill} />
-
-          <OrbitControls
-            enablePan={false}
-            enableZoom={false}
-            minPolarAngle={Math.PI * 0.32}
-            maxPolarAngle={Math.PI * 0.68}
-            rotateSpeed={0.55}
-          />
-
-          <EffectComposer>
-            <Bloom intensity={0.75} luminanceThreshold={0.35} luminanceSmoothing={0.9} mipmapBlur />
-            <Vignette eskil={false} offset={0.05} darkness={0.85} />
-          </EffectComposer>
+          <Scene onSelect={setSelectedSkill} onOrbitPointerDown={onOrbitPointerDown} />
         </Suspense>
       </Canvas>
 
       <div className={`skills-orbit-hint ${selectedSkill ? 'is-hidden' : ''}`}>
-        Drag to explore · Click a planet
+        Drag to spin and tilt · Click a planet
       </div>
 
       {selectedSkill && (

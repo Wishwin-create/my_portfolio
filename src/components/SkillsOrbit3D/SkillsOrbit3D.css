@@ -6,6 +6,27 @@
   position: relative;
   isolation: isolate;
   background: transparent;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.skills-orbit-wrapper:active {
+  cursor: grabbing;
+}
+
+.skills-orbit-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 70% 70% at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.6) 70%,
+    #000000 100%
+  );
 }
 
 .skill-planet-label {
