@@ -1,4 +1,5 @@
 import { useInView } from '../../hooks/useInView';
+import { useInViewOnce } from '../../hooks/useInViewOnce';
 import SkillsOrbit3D from '../SkillsOrbit3D/SkillsOrbit3D';
 import {
   SiJavascript, SiReact, SiHtml5, SiCss,
@@ -45,8 +46,8 @@ const skillCategories = [
 
 const Skills = () => {
   const [headingRef, headingInView] = useInView(0.3);
-  const [orbitRef, orbitInView] = useInView(0.01);
-  const [gridRef, gridInView] = useInView(0.1);
+  const [orbitRef, orbitInView] = useInViewOnce(0.01);
+  const [gridRef, gridInView] = useInViewOnce(0.1);
 
   return (
     <section id="skills" className="skills-section">

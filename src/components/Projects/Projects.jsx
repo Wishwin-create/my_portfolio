@@ -52,13 +52,16 @@ const projects = [
 ];
 
 const Projects = () => {
-  const [headingRef, headingInView] = useInView(0.3);
-  const [gridRef, gridInView] = useInView(0.1);
+  const [headingRef, headingInView] = useInView(0.01);
+  const [gridRef, gridInView] = useInView(0.01);
 
   return (
     <section id="projects" className="projects-section">
       <div className="projects-container">
-        <h2 ref={headingRef} className={`about-heading projects-heading ${headingInView ? 'in-view' : ''}`}>
+        <h2
+          ref={headingRef}
+          className={`about-heading projects-heading ${headingInView ? 'in-view' : ''}`}
+        >
           My Projects
         </h2>
 
