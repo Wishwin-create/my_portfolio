@@ -90,6 +90,7 @@ const Hero = () => {
           showCursor
           cursorCharacter="_"
           loop
+          startOnVisible
           style={{ fontSize: '3rem' }}
         />
 

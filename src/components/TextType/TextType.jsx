@@ -46,23 +46,21 @@ const TextType = ({
     return textColors[currentTextIndex % textColors.length];
   };
 
-  useEffect(() => {
-    if (!startOnVisible || !containerRef.current) return;
+useEffect(() => {
+  if (!startOnVisible || !containerRef.current) return;
 
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        setIsVisible(entry.isIntersecting);   // now toggles both ways, not just true once
+      });
+    },
+    { threshold: 0.1 }
+  );
 
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [startOnVisible]);
+  observer.observe(containerRef.current);
+  return () => observer.disconnect();
+}, [startOnVisible]);
 
   useEffect(() => {
     if (showCursor && cursorRef.current) {
