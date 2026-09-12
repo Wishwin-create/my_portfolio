@@ -1,12 +1,14 @@
 import { useState, useMemo } from 'react';
-import { useInViewOnce } from '../../hooks/useInViewOnce';
+import { useInView } from '../../hooks/useInView';
 import { FaAward, FaClock, FaLayerGroup, FaBolt, FaMedal, FaStar, FaCheckCircle } from 'react-icons/fa';
 import './Certifications.css';
 
 import cert1Img from '../../assets/certs/Solo Learn Python Developer.png';
 import cert2Img from '../../assets/certs/Solo Learn Web Development.png';
 import cert3Img from '../../assets/certs/Front End Development.png';
-import cert4Img from '../../assets/certs/Python Programming beginner.png';  // Placeholder for additional certificates
+import cert4Img from '../../assets/certs/Python Programming beginner.png';
+import cert5img from '../../assets/certs/Web development beginner.png';  
+import cert6Img from '../../assets/certs/JavaScript Essentials 1.png';
 
 // Replace with your real certificates and badge images
 const certifications = [
@@ -17,6 +19,7 @@ const certifications = [
     featured: true,
     image: cert1Img,
     credentialUrl: 'https://www.sololearn.com/certificates/CC-UX3MQ25V',
+    hours: 10,
   },
   {
     title: 'Web Development Certificate',
@@ -25,6 +28,7 @@ const certifications = [
     featured: true,
     image: cert2Img,
     credentialUrl: 'https://www.sololearn.com/certificates/CC-E2T1T5OB',
+    hours: 10,
   },
     {
     title: 'Front End Web Development',
@@ -34,6 +38,7 @@ const certifications = [
     image: cert3Img,
     credentialUrl: 'https://open.uom.lk/verify',
     credentialCode: 'kG4B2gg0Qz',  
+    hours: 15,
   },
   {
     title: 'Python Programming Beginner',
@@ -43,19 +48,44 @@ const certifications = [
     image: cert4Img,
     credentialUrl: 'https://open.uom.lk/verify',
     credentialCode: '7ZYuEaXPfV',  
+    hours: 20,
   },
+  {
+    title: 'Web Development Beginner',
+    issuer: 'University of Moratuwa',
+    category: 'Web Development',
+    featured: true,
+    image: cert5img,
+    credentialUrl: 'https://open.uom.lk/verify',
+    credentialCode: '7ZYuEaXPfV',
+    hours: 9,
+  },
+  {
+    title: 'JavaScript Essentials 1',
+    issuer: 'Cisco Networking Academy',
+    category: 'Programming',
+    featured: true,
+    image: cert6Img,
+    credentialUrl: 'https://www.credly.com/earner/earned/badge/189c4b8d-7211-48de-abea-2f2ceb67e345',
+    credentialCode: '',
+    hours: 40,
+  }
 ];
+
+const totalHours = certifications.reduce((sum, cert) => sum + (cert.hours || 0), 0);
+const uniquePlatforms = new Set(certifications.map((cert) => cert.issuer)).size;
+const uniqueSkillCategories = new Set(certifications.map((cert) => cert.category)).size;
 
 const stats = [
   { icon: <FaAward />, value: `${certifications.length}+`, label: 'Certificates Earned' },
-  { icon: <FaClock />, value: '0+', label: 'Learning Hours' },
-  { icon: <FaLayerGroup />, value: '0', label: 'Learning Platforms' },
-  { icon: <FaBolt />, value: '0+', label: 'Skills Acquired' },
+  { icon: <FaClock />, value: `${totalHours}+`, label: 'Learning Hours' },
+  { icon: <FaLayerGroup />, value: `${uniquePlatforms}`, label: 'Learning Platforms' },
+  { icon: <FaBolt />, value: `${uniqueSkillCategories}`, label: 'Skills Acquired' },
 ];
-
 const Certifications = () => {
-  const [headingRef, headingInView] = useInViewOnce(0.3);
-  const [gridRef, gridInView] = useInViewOnce(0.1);
+  const [sectionRef, sectionInView] = useInView(0.01);
+  const [headingRef, headingInView] = useInView(0.3);
+  const [gridRef, gridInView] = useInView(0.1);
 
   // Which grouping mode is active: 'category' (Subject) or 'issuer' (Institute)
   const [filterMode, setFilterMode] = useState('category');
@@ -83,7 +113,11 @@ const Certifications = () => {
   };
 
   return (
-    <section id="certifications" className="certifications-section">
+    <section
+      ref={sectionRef}
+      id="certifications"
+      className={`certifications-section ${sectionInView ? 'in-view' : ''}`}
+    >
       <div className="certifications-container">
         <h2 ref={headingRef} className={`about-heading certifications-heading ${headingInView ? 'in-view' : ''}`}>
           Certifications & Qualifications
@@ -161,20 +195,20 @@ const Certifications = () => {
                   <FaMedal className="cert-title-icon" />
                   <h3 className="cert-title-v2">{cert.title}</h3>
                 </div>
-                <span className="cert-issuer-v2">{cert.issuer}</span><br></br>
+                <span className="cert-issuer-v2">{cert.issuer}</span>
                 {cert.credentialCode && (
-  <span className="cert-credential-code">ID: {cert.credentialCode}</span>
-)}
+                  <span className="cert-credential-code">ID: {cert.credentialCode}</span>
+                )}
                 {cert.credentialUrl && (
-    <a 
-      href={cert.credentialUrl}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="cert-verify-link"
-    >
-      <FaCheckCircle /> Verify Credential
-    </a>
-  )}
+                  <a
+                    href={cert.credentialUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="cert-verify-link"
+                  >
+                    <FaCheckCircle /> Verify Credential
+                  </a>
+                )}
               </div>
             </div>
           ))}

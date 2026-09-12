@@ -9,6 +9,14 @@
 .certifications-container {
   max-width: 1200px;
   margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.certifications-section.in-view .certifications-container {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .certifications-heading {
@@ -153,7 +161,8 @@
 /* Certificate grid */
 .cert-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* Keep empty tracks so filtered cards retain the All view's card width. */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   align-items: stretch;
 }
@@ -297,8 +306,10 @@
 }
 
 .cert-issuer-v2 {
+  display: block;
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.35rem;
 }
 
 .cert-credential-code {
@@ -312,11 +323,38 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0.35rem;
   width: fit-content;
+  margin-bottom: 0.7rem;
+}
+
+.cert-verify-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  color: var(--fg);
+  font-size: 0.78rem;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.cert-verify-link:hover,
+.cert-verify-link:focus-visible {
+  text-decoration: none;
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {
   .certifications-section {
     padding: 4rem 6%;
+  }
+
+  .cert-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .cert-stat-card {
+    padding: 1.1rem 0.75rem;
   }
 
   .cert-grid {
@@ -327,5 +365,13 @@
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certifications-container {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
