@@ -343,6 +343,7 @@
   color: #ffffff;
 }
 
+
 @media (max-width: 768px) {
   .certifications-section {
     padding: 4rem 6%;
@@ -357,14 +358,51 @@
     padding: 1.1rem 0.75rem;
   }
 
-  .cert-grid {
-    grid-template-columns: 1fr;
+  .cert-mode-switch {
+    width: 100%;
+    justify-content: center;
   }
 
+  .cert-mode-btn {
+    flex: 1;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Filter tabs — smaller, scrollable, with visual scroll hint */
   .cert-filter-tabs {
-    overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.6rem;
+    margin: 0 -6% 2rem;
+    padding-left: 6%;
+    padding-right: 6%;
+    gap: 0.5rem;
+
+    /* Hide scrollbar visually but keep it scrollable */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .cert-filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cert-filter-tab {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .cert-filter-count {
+    font-size: 0.65rem;
+  }
+
+  .cert-grid {
+    grid-template-columns: 1fr;
   }
 }
 
