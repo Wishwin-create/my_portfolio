@@ -31,7 +31,7 @@ const projects = [
     description: 'EcoLearn is an interactive multimedia learning application designed to raise awareness about waste management and recycling practices among students and the general public. The project aims to educate users through engaging visuals and animations to make learning about environmental responsibility both fun and memorable.',
     tags: ['React', 'CSS'],
     github: 'https://github.com/Wishwin-create/ecolearn-website',
-    live: 'https://wishwin-create.github.io/ecolearn-website/',
+    live: 'https://ecolearn-website.vercel.app/',
   },
   {
     title: 'CineVault',
