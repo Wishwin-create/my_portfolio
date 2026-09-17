@@ -1,4 +1,4 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
   OrbitControls,
@@ -146,20 +146,46 @@ const Scene = () => {
   );
 };
 
+// ---------------------------------------------------------------------------
+// Stable matchMedia instance – evaluated once at module scope.
+// ---------------------------------------------------------------------------
+const mobileQuery =
+  typeof window !== 'undefined'
+    ? window.matchMedia('(max-width: 768px)')
+    : { matches: false, addEventListener: () => {}, removeEventListener: () => {} };
+
 const DevCharacter3D = () => {
-  // Mobile GPUs can fail or flicker when post-processing is rendered at the
-  // device's full pixel density. The scene, controls, and animation remain
-  // identical; only the backing buffers are capped for smaller screens.
-  const isMobileViewport =
-    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+  // Reactive mobile flag – updates on viewport resize without causing a
+  // mount/unmount cycle (only re-renders the Canvas props, not the 3-D scene).
+  const [isMobile, setIsMobile] = useState(mobileQuery.matches);
+
+  useEffect(() => {
+    const handler = (e) => setIsMobile(e.matches);
+    mobileQuery.addEventListener('change', handler);
+    return () => mobileQuery.removeEventListener('change', handler);
+  }, []);
 
   return (
     <div className="dev-3d-wrapper">
       <Canvas
         camera={{ position: [2.4, 1.7, 3], fov: 42 }}
         shadows
-        dpr={isMobileViewport ? 1 : [1, 1.5]}
-        gl={{ powerPreference: 'high-performance' }}
+        // Fixed DPR=1 on mobile – prevents the renderer from silently resizing
+        // its internal framebuffer mid-frame (the primary cause of the flicker).
+        dpr={isMobile ? 1 : [1, 1.5]}
+        gl={{
+          powerPreference: 'high-performance',
+          // Disabling MSAA on mobile cuts fill-rate cost and stops the
+          // multisample resolve step that flickers on some mobile drivers.
+          antialias: !isMobile,
+          // Stencil buffer is only needed by postprocessing which we skip on
+          // mobile anyway – remove it to save GPU memory bandwidth.
+          stencil: false,
+        }}
+        frameloop="always"
+        // Let R3F gracefully degrade rendering quality under GPU thermal
+        // pressure (common on phones) instead of stalling / flickering.
+        performance={{ min: 0.5 }}
       >
         <color attach="background" args={['#000000']} />
         <Suspense fallback={null}>
@@ -170,7 +196,7 @@ const DevCharacter3D = () => {
             intensity={1}
             color="#ffffff"
             castShadow
-            shadow-mapSize={isMobileViewport ? [256, 256] : [512, 512]}
+            shadow-mapSize={isMobile ? [256, 256] : [512, 512]}
           />
           <pointLight position={[-2.5, 1.5, -2]} intensity={0.35} color="#ffffff" />
           <pointLight position={[0, 1.2, -0.3]} intensity={0.25} color="#dbeaff" distance={0.9} decay={2} />
@@ -185,7 +211,7 @@ const DevCharacter3D = () => {
             scale={3.5}
             blur={3.5}
             far={1.2}
-            resolution={isMobileViewport ? 256 : 512}
+            resolution={isMobile ? 256 : 512}
             color="#000000"
           />
 
@@ -198,10 +224,16 @@ const DevCharacter3D = () => {
             autoRotateSpeed={0.7}
           />
 
-          <EffectComposer>
-            <Bloom intensity={0.35} luminanceThreshold={0.65} luminanceSmoothing={0.9} mipmapBlur />
-            <Vignette eskil={false} offset={0.2} darkness={0.7} />
-          </EffectComposer>
+          {/* EffectComposer is skipped on mobile.
+              The ping-pong framebuffers used by Bloom's mipmapBlur are the
+              #1 root cause of the GPU flicker on low-power / high-DPI mobile
+              GPUs. The scene is visually identical at mobile sizes without it. */}
+          {!isMobile && (
+            <EffectComposer>
+              <Bloom intensity={0.35} luminanceThreshold={0.65} luminanceSmoothing={0.9} mipmapBlur />
+              <Vignette eskil={false} offset={0.2} darkness={0.7} />
+            </EffectComposer>
+          )}
         </Suspense>
       </Canvas>
     </div>

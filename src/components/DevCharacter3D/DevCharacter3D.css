@@ -5,13 +5,24 @@
   overflow: hidden;
   cursor: grab;
   background: #000000;
+  /* Promote to its own GPU compositing layer so surrounding layout shifts
+     never trigger a repaint of the WebGL canvas (eliminates a major source
+     of the mobile flicker). */
+  will-change: transform;
+  /* Stop the browser's native touch-pan from racing with OrbitControls' own
+     pointer handling, which can produce a double-render jitter on mobile. */
+  touch-action: none;
 }
 
 .dev-3d-wrapper canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+  /* Ensure the canvas itself also opts out of native touch pan/zoom so that
+     OrbitControls gets every pointer event cleanly. */
+  touch-action: none;
 }
+
 
 .dev-3d-wrapper:active {
   cursor: grabbing;
