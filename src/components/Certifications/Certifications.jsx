@@ -9,6 +9,7 @@ import cert3Img from '../../assets/certs/Front End Development.png';
 import cert4Img from '../../assets/certs/Python Programming beginner.png';
 import cert5img from '../../assets/certs/Web development beginner.png';  
 import cert6Img from '../../assets/certs/JavaScript Essentials 1.png';
+import cert7Img from '../../assets/certs/Networking Basics.png';
 
 // Replace with your real certificates and badge images
 const certifications = [
@@ -69,7 +70,17 @@ const certifications = [
     credentialUrl: 'https://www.credly.com/earner/earned/badge/189c4b8d-7211-48de-abea-2f2ceb67e345',
     credentialCode: '',
     hours: 40,
-  }
+  },
+  {
+    title: 'Networking Basics',
+    issuer: 'Cisco Networking Academy',
+    category: 'Networking',
+    featured: true,
+    image: cert7Img,
+    credentialUrl: 'https://www.credly.com/earner/earned/badge/36962835-2a90-4b32-b0bf-71389af3641c',
+    credentialCode: '',
+    hours: 20,
+  },
 ];
 
 const totalHours = certifications.reduce((sum, cert) => sum + (cert.hours || 0), 0);

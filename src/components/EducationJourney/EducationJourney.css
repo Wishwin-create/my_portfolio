@@ -21,7 +21,7 @@
 .journey-track {
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .journey-track > .journey-line-bg,
@@ -89,7 +89,7 @@
 .row-left .journey-side.year-side {
   order: 3;
   justify-content: flex-start;
-  padding-left: 1.5rem;
+  padding-left: 0.5rem;
 }
 
 .row-right .journey-side.card-side {
@@ -100,7 +100,7 @@
 .row-right .journey-side.year-side {
   order: 1;
   justify-content: flex-end;
-  padding-right: 1.5rem;
+  padding-right: 0.5rem;
 }
 
 .journey-node-icon {
@@ -116,7 +116,8 @@
   justify-content: center;
   z-index: 2;
   overflow: hidden;
-  padding: 8px;
+  /* Keep the image corners inside the circular mask so the full emblem is visible. */
+  padding: 10px;
   box-sizing: border-box;
   transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
 }
@@ -197,7 +198,46 @@
 /* Mobile — stack everything into a single left-aligned column */
 @media (max-width: 768px) {
   .journey-row {
-    gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 0.75rem;
+    row-gap: 0.5rem;
+    justify-content: initial;
+    align-items: start;
+  }
+
+  /* Mobile uses one stable timeline column instead of alternating desktop orders. */
+  .journey-side.card-side,
+  .row-left .journey-side.card-side,
+  .row-right .journey-side.card-side {
+    grid-column: 2;
+    grid-row: 1;
+    order: initial;
+    min-width: 0;
+    justify-content: stretch;
+  }
+
+  .journey-side.year-side,
+  .row-left .journey-side.year-side,
+  .row-right .journey-side.year-side {
+    grid-column: 2;
+    grid-row: 2;
+    order: initial;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: flex-start;
+  }
+
+  .journey-node-icon {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+    padding: 7px;
+  }
+
+  .journey-line-bg,
+  .journey-line-progress {
+    left: 20px;
   }
 
   .journey-card {
@@ -241,7 +281,12 @@
   .journey-node-icon {
     width: 34px;
     height: 34px;
-    padding: 5px;
+    padding: 6px;
+  }
+
+  .journey-line-bg,
+  .journey-line-progress {
+    left: 17px;
   }
 
   .journey-year {
