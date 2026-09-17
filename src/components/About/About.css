@@ -70,6 +70,7 @@
 .about-character-wrapper {
   width: 100%;
   min-width: 0;
+  min-height: 460px;
   margin-top: -2rem;
 }
 
@@ -138,6 +139,7 @@
   }
 
   .about-character-wrapper {
+    min-height: 340px;
     margin-top: 2rem;
   }
 

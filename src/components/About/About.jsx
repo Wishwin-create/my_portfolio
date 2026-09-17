@@ -7,6 +7,7 @@ import {
 import { FaAws, FaJava } from 'react-icons/fa';
 import RotatingText from '../RotatingText/RotatingText';
 import { useInView } from '../../hooks/useInView';
+import { useInViewOnce } from '../../hooks/useInViewOnce';
 import './About.css';
 import EducationJourney from '../EducationJourney/EducationJourney';
 
@@ -31,7 +32,10 @@ const About = () => {
   const [logoRef, logoInView] = useInView(0.2);
   const [headingRef, headingInView] = useInView(0.2);
   const [textRef, textInView] = useInView(0.2);
-  const [charRef, charInView] = useInView(0.1); 
+  // The canvas changes the wrapper's height when it mounts. Observing that
+  // same wrapper with a toggling observer can cause a mobile mount/unmount
+  // loop, which presents as a flicker. Load the scene once when reached.
+  const [charRef, charInView] = useInViewOnce(0.1);
 
   return (
     <section id="about" className="about-section">
