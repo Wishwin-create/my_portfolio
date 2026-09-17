@@ -1,6 +1,6 @@
+import { lazy, Suspense } from 'react';
 import { useInView } from '../../hooks/useInView';
 import { useInViewOnce } from '../../hooks/useInViewOnce';
-import SkillsOrbit3D from '../SkillsOrbit3D/SkillsOrbit3D';
 import {
   SiJavascript, SiReact, SiHtml5, SiCss,
   SiNodedotjs, SiExpress, SiPython, SiMysql, SiMongodb,
@@ -8,6 +8,9 @@ import {
 import { FaJava, FaAws } from 'react-icons/fa';
 import { TbLetterC } from 'react-icons/tb';
 import './Skills.css';
+
+// Defer the largest interactive scene until the skills section is approached.
+const SkillsOrbit3D = lazy(() => import('../SkillsOrbit3D/SkillsOrbit3D'));
 
 const skillCategories = [
   {
@@ -57,7 +60,11 @@ const Skills = () => {
         </h2>
 
         <div ref={orbitRef} className="skills-orbit-container">
-          {orbitInView && <SkillsOrbit3D />}
+          {orbitInView && (
+            <Suspense fallback={null}>
+              <SkillsOrbit3D />
+            </Suspense>
+          )}
         </div>
 
         <div ref={gridRef} className={`skills-list-grid ${gridInView ? 'in-view' : ''}`}>

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import LogoLoop from '../LogoLoop/LogoLoop';
 import {
   SiJavascript, SiReact, SiNodedotjs, SiExpress,
@@ -7,8 +8,10 @@ import { FaAws, FaJava } from 'react-icons/fa';
 import RotatingText from '../RotatingText/RotatingText';
 import { useInView } from '../../hooks/useInView';
 import './About.css';
-import DevCharacter3D from '../DevCharacter3D/DevCharacter3D';
 import EducationJourney from '../EducationJourney/EducationJourney';
+
+// Three.js is only needed after the character enters the viewport.
+const DevCharacter3D = lazy(() => import('../DevCharacter3D/DevCharacter3D'));
 
 
 const techLogos = [
@@ -96,7 +99,11 @@ const About = () => {
 
 
           <div ref={charRef} className="about-character-wrapper">
-             {charInView && <DevCharacter3D />}
+             {charInView && (
+               <Suspense fallback={null}>
+                 <DevCharacter3D />
+               </Suspense>
+             )}
           </div>
       </div>
        <EducationJourney />

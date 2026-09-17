@@ -1,11 +1,14 @@
-import { useRef } from 'react';
-import Galaxy from '../Galaxy/Galaxy';
+import { lazy, Suspense, useRef } from 'react';
 import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import avatarImg from '../../assets/my_photo.png';
 import SocialLinks from '../SocialLinks/SocialLinks';
 import { useInView } from '../../hooks/useInView';
 import './Hero.css';
+
+// Keep the WebGL background out of the initial bundle. It is loaded when the
+// hero's existing in-view check enables it, so the page behavior is unchanged.
+const Galaxy = lazy(() => import('../Galaxy/Galaxy'));
 
 const Hero = () => {
   const bioRef = useRef(null);
@@ -46,20 +49,22 @@ const Hero = () => {
     >
       <div ref={galaxyRef} style={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
         {galaxyInView && (
-          <Galaxy
-            mouseRepulsion
-            mouseInteraction
-            density={1}
-            glowIntensity={0.3}
-            saturation={0}
-            hueShift={0}
-            twinkleIntensity={0.3}
-            rotationSpeed={0.1}
-            repulsionStrength={2}
-            autoCenterRepulsion={0}
-            starSpeed={0.5}
-            speed={1}
-          />
+          <Suspense fallback={null}>
+            <Galaxy
+              mouseRepulsion
+              mouseInteraction
+              density={1}
+              glowIntensity={0.3}
+              saturation={0}
+              hueShift={0}
+              twinkleIntensity={0.3}
+              rotationSpeed={0.1}
+              repulsionStrength={2}
+              autoCenterRepulsion={0}
+              starSpeed={0.5}
+              speed={1}
+            />
+          </Suspense>
         )}
       </div>
 
