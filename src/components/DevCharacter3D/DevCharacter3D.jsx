@@ -147,9 +147,20 @@ const Scene = () => {
 };
 
 const DevCharacter3D = () => {
+  // Mobile GPUs can fail or flicker when post-processing is rendered at the
+  // device's full pixel density. The scene, controls, and animation remain
+  // identical; only the backing buffers are capped for smaller screens.
+  const isMobileViewport =
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+
   return (
     <div className="dev-3d-wrapper">
-      <Canvas camera={{ position: [2.4, 1.7, 3], fov: 42 }} shadows dpr={[1, 1.5]}>
+      <Canvas
+        camera={{ position: [2.4, 1.7, 3], fov: 42 }}
+        shadows
+        dpr={isMobileViewport ? 1 : [1, 1.5]}
+        gl={{ powerPreference: 'high-performance' }}
+      >
         <color attach="background" args={['#000000']} />
         <Suspense fallback={null}>
           {/* Lighting only — no Environment map, no reflections leaking onto the shadow plane */}
@@ -159,7 +170,7 @@ const DevCharacter3D = () => {
             intensity={1}
             color="#ffffff"
             castShadow
-            shadow-mapSize={[512, 512]}
+            shadow-mapSize={isMobileViewport ? [256, 256] : [512, 512]}
           />
           <pointLight position={[-2.5, 1.5, -2]} intensity={0.35} color="#ffffff" />
           <pointLight position={[0, 1.2, -0.3]} intensity={0.25} color="#dbeaff" distance={0.9} decay={2} />
@@ -174,7 +185,7 @@ const DevCharacter3D = () => {
             scale={3.5}
             blur={3.5}
             far={1.2}
-            resolution={512}
+            resolution={isMobileViewport ? 256 : 512}
             color="#000000"
           />
 
