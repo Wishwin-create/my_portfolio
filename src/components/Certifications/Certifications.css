@@ -404,6 +404,21 @@
   .cert-grid {
     grid-template-columns: 1fr;
   }
+  .cert-filter-tabs-wrapper {
+    position: relative;
+  }
+
+
+  .cert-filter-tabs-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0.6rem;
+    width: 32px;
+    background: linear-gradient(to right, transparent, var(--bg));
+    pointer-events: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
