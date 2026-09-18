@@ -39,13 +39,14 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   width: 100%;
-  min-height: 56px;   /* add this — keeps the bar visible even when nav is collapsed */
+  min-height: 56px;
 }
 
 .gooey-nav-container nav {
   display: flex;
   justify-content: center;
   position: relative;
+  z-index: 4;
   transform: translate3d(0, 0, 0.01px);
 }
 
@@ -77,16 +78,22 @@
   color: white;
 }
 
+/* Press-down feedback: fires the instant you click, before the blob settles */
 .gooey-nav-container nav ul li a {
   display: inline-block;
   padding: 0.6em 0.9em;
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+
+.gooey-nav-container nav ul li:active a {
+  transform: scale(0.92);
 }
 
 .gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
-  box-shadow: 0 0 0.5px 1.5px white;
+  box-shadow: none;
 }
 
 .gooey-nav-container nav ul li::after {
@@ -101,10 +108,21 @@
   z-index: -1;
 }
 
+/* The real label stays visible under the white pill; the crisp copy the
+   user actually reads is the .effect.text clone layered on top of the blur */
 .gooey-nav-container nav ul li.active {
+  background: #ffffff;
   color: black;
   font-weight: 900;
   text-shadow: none;
+  z-index: 2;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.35), 0 4px 14px rgba(255, 255, 255, 0.18);
+}
+
+.gooey-nav-container nav ul li.active a {
+  position: relative;
+  z-index: 1;
+  color: #000000 !important;
 }
 
 .gooey-nav-container nav ul li.active::after {
@@ -124,33 +142,33 @@
   display: grid;
   place-items: center;
   z-index: 1;
+  font-weight: 900;
+  font-size: 1.1rem;
+  white-space: nowrap;
 }
 
 .gooey-nav-container .effect.positioned {
-  opacity: 1;  
+  opacity: 1;
 }
 
-.gooey-nav-container .effect.text {
-  color: white;
-  transition: color 0.3s ease;
-}
-
-.gooey-nav-container .effect.text.active {
-  color: black;
-  font-weight: 900;
-}
-
+/* This is the actual "goo" mechanism: blur softens the blob's edges, then
+   contrast(100) snaps everything back to hard black/white, which fuses two
+   overlapping blurred shapes into one seamless blob instead of two circles. */
 .gooey-nav-container .effect.filter {
+  z-index: 0;
   filter: blur(7px) contrast(100) blur(0);
   mix-blend-mode: lighten;
 }
 
+/* Solid black backdrop the blur composites against — matches the bar's own
+   background, so it never shows as a visible box even with overflow:visible
+   on mobile. */
 .gooey-nav-container .effect.filter::before {
   content: '';
   position: absolute;
   inset: -75px;
   z-index: -2;
-  background:transparent;
+  background: black;
 }
 
 .gooey-nav-container .effect.filter::after {
@@ -168,8 +186,38 @@
   animation: pill 0.3s ease both;
 }
 
+/* Crisp text clone: sits above the blurred/blended blob so the label reads
+   sharp even while the shape beneath it is morphing. Color flips to black
+   once it's riding on top of the white pill. */
+.gooey-nav-container .effect.text {
+  color: white;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+
+.gooey-nav-container .effect.text.active {
+  color: black;
+}
+
 @keyframes pill {
   to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-pill-pop {
+  0% {
+    transform: scale(0.72);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -328,9 +376,8 @@
 }
 
 @media (max-width: 768px) {
-
   .gooey-nav-container {
-    overflow: visible;   /* add this line */
+    overflow: visible;
   }
 
   .gooey-nav-toggle {
@@ -352,18 +399,25 @@
     display: block;
   }
 
+  .gooey-nav-container nav {
+    z-index: auto;
+    overflow: visible;
+  }
+
   .gooey-nav-container nav ul {
     flex-direction: column;
     align-items: center;
     gap: 0.75em;
+    position: relative;
+    z-index: 6;
   }
 
-  
-  .gooey-nav-container .effect {
-    display: none;
+  .gooey-nav-container nav ul li.active {
+    background: transparent;
+    box-shadow: none;
   }
 
-   .gooey-nav-container nav.mobile-open ~ .effect {
-    display: grid;   /* only shown once the mobile nav is open */
+  .gooey-nav-container nav ul li.active::after {
+    animation: mobile-pill-pop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
 }
