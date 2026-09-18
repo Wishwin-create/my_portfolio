@@ -109,7 +109,7 @@ const StatCard = ({ stat, isActive }) => {
 const Certifications = () => {
   const [sectionRef, sectionInView] = useInView(0.01);
   const [headingRef, headingInView] = useInView(0.3);
-  const [gridRef, gridInView] = useInView(0.3);
+  const [gridRef, gridInView] = useInView(0.01);
 
   // Which grouping mode is active: 'category' (Subject) or 'issuer' (Institute)
   const [filterMode, setFilterMode] = useState('category');
