@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useInView } from '../../hooks/useInView';
+import { useCountUp } from '../../hooks/useCountup';
 import { FaAward, FaClock, FaLayerGroup, FaBolt, FaMedal, FaStar, FaCheckCircle } from 'react-icons/fa';
 import './Certifications.css';
 
@@ -88,15 +89,27 @@ const uniquePlatforms = new Set(certifications.map((cert) => cert.issuer)).size;
 const uniqueSkillCategories = new Set(certifications.map((cert) => cert.category)).size;
 
 const stats = [
-  { icon: <FaAward />, value: `${certifications.length}+`, label: 'Certificates Earned' },
-  { icon: <FaClock />, value: `${totalHours}+`, label: 'Learning Hours' },
-  { icon: <FaLayerGroup />, value: `${uniquePlatforms}`, label: 'Learning Platforms' },
-  { icon: <FaBolt />, value: `${uniqueSkillCategories}`, label: 'Skills Acquired' },
+  { icon: <FaAward />, target: certifications.length, suffix: '+', label: 'Certificates Earned' },
+  { icon: <FaClock />, target: totalHours, suffix: '+', label: 'Learning Hours' },
+  { icon: <FaLayerGroup />, target: uniquePlatforms, suffix: '', label: 'Learning Platforms' },
+  { icon: <FaBolt />, target: uniqueSkillCategories, suffix: '', label: 'Skills Acquired' },
 ];
+
+const StatCard = ({ stat, isActive }) => {
+  const count = useCountUp(stat.target, isActive);
+
+  return (
+    <div className="cert-stat-card">
+      <div className="cert-stat-icon">{stat.icon}</div>
+      <div className="cert-stat-value">{count}{stat.suffix}</div>
+      <div className="cert-stat-label">{stat.label}</div>
+    </div>
+  );
+};
 const Certifications = () => {
   const [sectionRef, sectionInView] = useInView(0.01);
   const [headingRef, headingInView] = useInView(0.3);
-  const [gridRef, gridInView] = useInView(0.1);
+  const [gridRef, gridInView] = useInView(0.3);
 
   // Which grouping mode is active: 'category' (Subject) or 'issuer' (Institute)
   const [filterMode, setFilterMode] = useState('category');
@@ -134,18 +147,20 @@ const Certifications = () => {
           Certifications & Qualifications
         </h2>
         <p className="certifications-subtitle">
-          Formally accredited courses, diplomas, and technical specializations with verifiable certificates.
+          Formally accredited courses and technical specializations with verifiable certificates.
         </p>
 
-        <div className="cert-stats-grid">
-          {stats.map((stat) => (
-            <div key={stat.label} className="cert-stat-card">
-              <div className="cert-stat-icon">{stat.icon}</div>
-              <div className="cert-stat-value">{stat.value}</div>
-              <div className="cert-stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+      <div className="cert-stats-grid">
+  {stats.map((stat) => (
+    <StatCard
+      key={stat.label}
+      stat={stat}
+      isActive={sectionInView}
+    />
+  ))}
+    </div>
+          
+        
 
         {/* Mode switch: Subject vs Institute */}
         <div className="cert-mode-switch">
@@ -164,6 +179,7 @@ const Certifications = () => {
         </div>
 
         {/* Filter tabs — reflect whichever mode is active */}
+        <div className="cert-filter-tabs-wrapper">
         <div className="cert-filter-tabs">
           {categories.map(([name, count]) => (
             <button
@@ -174,6 +190,7 @@ const Certifications = () => {
               {name} <span className="cert-filter-count">{count}</span>
             </button>
           ))}
+        </div>
         </div>
 
         <div ref={gridRef} className={`cert-grid ${gridInView ? 'in-view' : ''}`}>
