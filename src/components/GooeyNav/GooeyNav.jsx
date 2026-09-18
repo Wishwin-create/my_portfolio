@@ -92,12 +92,15 @@ const GooeyNav = ({
     Object.assign(filterRef.current.style, styles);
     Object.assign(textRef.current.style, styles);
     textRef.current.innerText = element.innerText;
+
+    filterRef.current.classList.add('positioned');
+    textRef.current.classList.add('positioned');
   };
 
   const handleClick = (e, index) => {
     const liEl = e.currentTarget;
     if (activeIndex === index) {
-      setIsMobileOpen(false);
+     setTimeout(() => setIsMobileOpen(false), 300);
       return;
     }
 
@@ -119,7 +122,7 @@ const GooeyNav = ({
       makeParticles(filterRef.current);
     }
 
-    setIsMobileOpen(false);
+   setTimeout(() => setIsMobileOpen(false), 500);
   };
 
   const handleKeyDown = (e, index) => {
@@ -150,22 +153,36 @@ const GooeyNav = ({
     resizeObserver.observe(containerRef.current);
     return () => resizeObserver.disconnect();
   }, [activeIndex]);
+  useEffect(() => {
+  if (isMobileOpen) {
+    requestAnimationFrame(() => {
+      const activeLi = navRef.current?.querySelectorAll('li')[activeIndex];
+      if (activeLi) {
+        updateEffectPosition(activeLi);
+        textRef.current?.classList.add('active');
+      }
+    });
+  } else {
+    // Optional: clear any leftover particles when closing, so they don't linger mid-animation
+    if (filterRef.current) {
+      const particles = filterRef.current.querySelectorAll('.particle');
+      particles.forEach((p) => filterRef.current.removeChild(p));
+    }
+  }
+}, [isMobileOpen, activeIndex]);
 
   return (
     <div className="gooey-nav-container" ref={containerRef}>
       <button
-        className="gooey-nav-toggle"
-        onClick={() => {
-    console.log('toggle clicked, current state:', isMobileOpen);
-    setIsMobileOpen(prev => !prev);
-  }}
-        aria-label="Toggle navigation menu"
-        aria-expanded={isMobileOpen}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  className={`gooey-nav-toggle ${isMobileOpen ? 'open' : ''}`}
+  onClick={() => setIsMobileOpen(prev => !prev)}
+  aria-label="Toggle navigation menu"
+  aria-expanded={isMobileOpen}
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
       <nav className={isMobileOpen ? 'mobile-open' : ''}>
         <ul ref={navRef}>
