@@ -5,8 +5,8 @@ import './SocialLinks.css';
 const socialLinks = [
   { icon: <FaGithub />, label: 'GitHub', href: 'https://github.com/Wishwin-create' },
   { icon: <FaLinkedin />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/wisvin-gesara-0137652a6/' },
-  { icon: <FaFacebook />, label: 'Facebook', href: 'https://facebook.com/your-profile' },
-  { icon: <HiOutlineMail />, label: 'Email', href: 'mailto:gesarawishwin@gmail.com' },
+  { icon: <FaFacebook />, label: 'Facebook', href: 'https://www.facebook.com/wishwin.gesara?mibextid=ZbWKwL' },
+  { icon: <HiOutlineMail />, label: 'Email', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=gesarawishwin@gmail.com' },
 ];
 
 const SocialLinks = () => {
