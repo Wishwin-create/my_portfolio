@@ -88,7 +88,7 @@ const handleSubmit = async (event) => {
             <div className="contact-form-row">
               <div className="contact-form-group">
                 <label htmlFor="contact-name">Your name</label>
-                <input id="contact-name" name="name" type="text" placeholder="John Doe" required />
+                <input id="contact-name" name="name" type="text" placeholder="name" required />
               </div>
               <div className="contact-form-group">
                 <label htmlFor="contact-email">Email address</label>
