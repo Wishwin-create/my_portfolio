@@ -1,31 +1,61 @@
 import { useState } from 'react';
 import { FaEnvelope, FaMapMarkerAlt, FaPaperPlane, FaPhone } from 'react-icons/fa';
-import { useInViewOnce } from '../../hooks/useInViewOnce';
+
+import { useInView } from '../../hooks/useInView';
 import SocialLinks from '../SocialLinks/SocialLinks';
 import './Contact.css';
 
+
 const contactDetails = [
   { icon: <FaEnvelope />, label: 'Email', value: 'gesarawishwin@gmail.com', href: 'mailto:gesarawishwin@gmail.com' },
-  { icon: <FaPhone />, label: 'Phone', value: '+94 77 123 4567', href: 'tel:+94771234567' },
+  { icon: <FaPhone />, label: 'Phone', value: '+94 719764101', href: 'tel:0719764101' },
   { icon: <FaMapMarkerAlt />, label: 'Location', value: 'Colombo, Sri Lanka' },
 ];
 
 const Contact = () => {
-  const [sectionRef, isInView] = useInViewOnce(0.15);
+  const [headingRef, headingInView] = useInView(0.05);
+  const [sectionRef, isInView] = useInView(0.15);
   const [status, setStatus] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setStatus("Thanks for reaching out - I'll get back to you soon.");
-    event.currentTarget.reset();
-  };
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setStatus('sending');
+
+  const form = event.currentTarget; 
+  const formData = new FormData(event.currentTarget);
+
+  try {
+    const response = await fetch('https://formspree.io/f/mjykyrjz', {
+      method: 'POST',
+      body: formData,
+      headers: { Accept: 'application/json' },
+    });
+     ;
+
+    if (response.ok) {
+      setStatus("Thanks for reaching out - I'll get back to you soon.");
+      form.reset();
+    } else {
+      setStatus('error');
+    }
+  } catch {
+    setStatus('error');
+  }
+};
 
   return (
     <section id="contact" className="contact-section" ref={sectionRef}>
       <div className="contact-container">
-        <p className="contact-eyebrow">Let's work together</p>
-        <h2 className="contact-heading">Get In Touch</h2>
-        <p className="contact-subtitle">
+        <p className={`contact-eyebrow ${isInView ? 'in-view' : ''}`}>
+         Let's work together
+       </p>
+       <h2
+          ref={headingRef}
+          className={`about-heading contact-heading ${headingInView ? 'in-view' : ''}`} 
+        >
+        Get In Touch
+        </h2>
+        <p className={`contact-subtitle ${isInView ? 'in-view' : ''}`}>
           Have an idea, a project, or just want to say hello? Send a message and
           let's make something useful and memorable.
         </p>
@@ -54,6 +84,7 @@ const Contact = () => {
             <SocialLinks />
           </div>
           <form className="contact-form" onSubmit={handleSubmit}>
+            <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
             <div className="contact-form-row">
               <div className="contact-form-group">
                 <label htmlFor="contact-name">Your name</label>
@@ -72,10 +103,19 @@ const Contact = () => {
               <label htmlFor="contact-message">Message</label>
               <textarea id="contact-message" name="message" rows="6" placeholder="Tell me a little about your idea..." required />
             </div>
-            <button className="contact-submit-btn" type="submit">
-              Send Message <FaPaperPlane aria-hidden="true" />
+            <button className="contact-submit-btn" type="submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'Sending...' : (
+                <>Send Message <FaPaperPlane aria-hidden="true" /></>
+              )}
             </button>
-            {status && <p className="contact-status contact-status-success" role="status">{status}</p>}
+            {status === 'error' && (
+              <p className="contact-status contact-status-error" role="status">
+                Something went wrong — please email me directly instead.
+              </p>
+            )}
+            {status && status !== 'error' && status !== 'sending' && (
+              <p className="contact-status contact-status-success" role="status" aria-live="polite">{status}</p>
+            )}
           </form>
         </div>
       </div>
