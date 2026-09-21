@@ -5,6 +5,7 @@ import Skills from './components/Skills/Skills';
 import Projects from './components/Projects/Projects';
 import Certifications from './components/Certifications/Certifications';
 import Contact from './components/Contact/Contact';
+import moonImage from './moon.png';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         <Certifications />
         <Contact />
       </main>
+      <div className="portfolio-moon">
+       <img src={moonImage} alt="" />
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@
   width: 100%;
   background: var(--bg);
   color: var(--fg);
-  padding: 5rem 5%;
+  padding: 5rem 5% 1rem;
   scroll-margin-top: 30px;
 }
 
@@ -258,7 +258,7 @@ a.contact-info-item {
 
 @media (max-width: 768px) {
   .contact-section {
-    padding: 4rem 6%;
+    padding: 1.5rem 6% 4rem;
   }
 
   .contact-grid {
