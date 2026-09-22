@@ -3,8 +3,8 @@ import { useInView } from '../../hooks/useInView';
 import './EducationJourney.css';
 import ShardBackground from '../ShardBackground/ShardBackground';
 
-import uocLogo from '../../assets/logos/uoc-logo.jpg';
-import slegaLogo from '../../assets/logos/slega-logo.png';
+import uocLogo from '../../assets/logos/uoc-logo.webp';
+import slegaLogo from '../../assets/logos/slega-logo.webp';
 import mrcLogo from '../../assets/logos/mrc-logo.webp';
 
 const milestones = [
@@ -51,44 +51,59 @@ const EducationJourney = () => {
   const [titleRef, titleInView] = useInView(0.3);
 
   useEffect(() => {
-  let ticking = false;
-
-  const updateJourney = () => {
     const el = containerRef.current;
     if (!el) return;
 
-    const rect = el.getBoundingClientRect();
-    const viewportH = window.innerHeight;
+    let ticking = false;
 
-    const total = rect.height - viewportH * 0.5;
-    const scrolled = viewportH * 0.75 - rect.top;
-    const ratio = Math.min(1, Math.max(0, scrolled / total));
-    setProgress(ratio);
+    const updateJourney = () => {
+      const rect = el.getBoundingClientRect();
+      const viewportH = window.innerHeight;
 
-    let newActiveIndex = -1;
-    nodeRefs.current.forEach((node, i) => {
-      if (!node) return;
-      const nodeRect = node.getBoundingClientRect();
-      if (nodeRect.top < viewportH * 0.75) {
-        newActiveIndex = i;
+      const total = rect.height - viewportH * 0.5;
+      const scrolled = viewportH * 0.75 - rect.top;
+      const ratio = Math.min(1, Math.max(0, scrolled / total));
+      setProgress(ratio);
+
+      let newActiveIndex = -1;
+      nodeRefs.current.forEach((node, i) => {
+        if (!node) return;
+        const nodeRect = node.getBoundingClientRect();
+        if (nodeRect.top < viewportH * 0.75) {
+          newActiveIndex = i;
+        }
+      });
+      setActiveIndex(newActiveIndex);
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateJourney);
+        ticking = true;
       }
-    });
-    setActiveIndex(newActiveIndex);
+    };
 
-    ticking = false;
-  };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          window.addEventListener('scroll', handleScroll, { passive: true });
+          updateJourney();
+        } else {
+          window.removeEventListener('scroll', handleScroll);
+        }
+      },
+      { rootMargin: '250px 0px 250px 0px' }
+    );
 
-  const handleScroll = () => {
-    if (!ticking) {
-      requestAnimationFrame(updateJourney);
-      ticking = true;
-    }
-  };
+    observer.observe(el);
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  updateJourney();
-  return () => window.removeEventListener('scroll', handleScroll);
-}, []);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div className="journey-wrapper">
@@ -123,7 +138,7 @@ const EducationJourney = () => {
       </div>
 
       <div className="journey-node-icon">
-         <img src={item.logo} alt={item.place} className="journey-logo-img" />
+         <img src={item.logo} alt={item.place} className="journey-logo-img" loading="lazy" width="48" height="48" />
       </div>
 
       <div className="journey-side year-side">

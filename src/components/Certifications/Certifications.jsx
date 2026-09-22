@@ -4,13 +4,13 @@ import { useCountUp } from '../../hooks/useCountup';
 import { FaAward, FaClock, FaLayerGroup, FaBolt, FaMedal, FaStar, FaCheckCircle } from 'react-icons/fa';
 import './Certifications.css';
 
-import cert1Img from '../../assets/certs/Solo Learn Python Developer.png';
-import cert2Img from '../../assets/certs/Solo Learn Web Development.png';
-import cert3Img from '../../assets/certs/Front End Development.png';
-import cert4Img from '../../assets/certs/Python Programming beginner.png';
-import cert5img from '../../assets/certs/Web development beginner.png';  
-import cert6Img from '../../assets/certs/JavaScript Essentials 1.png';
-import cert7Img from '../../assets/certs/Networking Basics.png';
+import cert1Img from '../../assets/certs/Solo Learn Python Developer.webp';
+import cert2Img from '../../assets/certs/Solo Learn Web Development.webp';
+import cert3Img from '../../assets/certs/Front End Development.webp';
+import cert4Img from '../../assets/certs/Python Programming beginner.webp';
+import cert5img from '../../assets/certs/Web development beginner.webp';  
+import cert6Img from '../../assets/certs/JavaScript Essentials 1.webp';
+import cert7Img from '../../assets/certs/Networking Basics.webp';
 
 // Replace with your real certificates and badge images
 const certifications = [
@@ -202,7 +202,14 @@ const Certifications = () => {
             >
               <div className="cert-badge-wrapper">
                 {cert.image ? (
-                  <img src={cert.image} alt={cert.title} className="cert-badge-img" loading="lazy" />
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="cert-badge-img"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                  />
                 ) : (
                   <div className="cert-badge-placeholder">
                     <FaAward />

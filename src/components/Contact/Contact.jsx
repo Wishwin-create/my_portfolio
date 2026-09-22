@@ -7,7 +7,7 @@ import './Contact.css';
 
 
 const contactDetails = [
-  { icon: <FaEnvelope />, label: 'Email', value: 'gesarawishwin@gmail.com', href: 'mailto:gesarawishwin@gmail.com' },
+  { icon: <FaEnvelope />, label: 'Email', value: 'gesarawishwin@gmail.com', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=gesarawishwin@gmail.com' },
   { icon: <FaPhone />, label: 'Phone', value: '+94 719764101', href: 'tel:0719764101' },
   { icon: <FaMapMarkerAlt />, label: 'Location', value: 'Colombo, Sri Lanka' },
 ];

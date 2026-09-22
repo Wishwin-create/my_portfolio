@@ -160,7 +160,13 @@ const Scene = ({ onSelect, onOrbitPointerDown }) => (
   </Float>
 );
 
+const mobileQuery =
+  typeof window !== 'undefined'
+    ? window.matchMedia('(max-width: 768px)')
+    : { matches: false, addEventListener: () => {}, removeEventListener: () => {} };
+
 const SkillsOrbit3D = () => {
+  const [isMobile, setIsMobile] = useState(mobileQuery.matches);
   const [selectedSkill, setSelectedSkill] = useState(null);
   const wrapperRef = useRef();
   const pointerRef = useRef({ active: false, lastX: 0, lastY: 0 });
@@ -215,13 +221,24 @@ const SkillsOrbit3D = () => {
     };
   }, [onPointerMove, onPointerUp]);
 
+  useEffect(() => {
+    const handler = (e) => setIsMobile(e.matches);
+    mobileQuery.addEventListener('change', handler);
+    return () => mobileQuery.removeEventListener('change', handler);
+  }, []);
+
   return (
     <div className="skills-orbit-wrapper" ref={wrapperRef} onPointerDown={onPointerDown}>
-      <Canvas camera={{ position: [0, 5.5, 11], fov: 42 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }} style={{ background: 'transparent' }}>
+      <Canvas
+        camera={{ position: [0, 5.5, 11], fov: 42 }}
+        dpr={isMobile ? 1 : [1, 1.5]}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        style={{ background: 'transparent' }}
+      >
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[3, 4, 2]} intensity={0.65} color="#ffffff" />
-          <Stars radius={28} depth={20} count={750} factor={1.8} saturation={0} fade speed={0.35} />
+          <Stars radius={28} depth={20} count={isMobile ? 350 : 750} factor={1.8} saturation={0} fade speed={0.35} />
 
           <Scene onSelect={setSelectedSkill} onOrbitPointerDown={onOrbitPointerDown} />
         </Suspense>

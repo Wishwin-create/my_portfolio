@@ -17,6 +17,7 @@
 }
 
 .skills-orbit-container {
+  min-height: 640px;
   margin-bottom: 3rem;
 }
 
@@ -118,6 +119,10 @@
 @media (max-width: 768px) {
   .skills-section {
     padding: 4rem 6%;
+  }
+
+  .skills-orbit-container {
+    min-height: 480px;
   }
 
   

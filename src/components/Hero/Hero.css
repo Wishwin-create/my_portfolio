@@ -69,6 +69,15 @@
 
 .hero-profile-card .pc-card {
   width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: 0.718 !important;
+}
+
+.hero-profile-card .pc-avatar-content .avatar {
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center bottom !important;
 }
 
 .hero-bio {
@@ -110,6 +119,12 @@
   .hero-bio {
     --hero-profile-width: calc(min(70svh, 450px) * 0.718);
   }
+
+  .hero-profile-card .pc-card {
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 0.718 !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -117,12 +132,24 @@
   .hero-bio {
     --hero-profile-width: calc(min(60svh, 380px) * 0.718);
   }
+
+  .hero-profile-card .pc-card {
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 0.718 !important;
+  }
 }
 
 @media (max-width: 320px) {
   .hero-profile-card,
   .hero-bio {
     --hero-profile-width: calc(min(55svh, 320px) * 0.718);
+  }
+
+  .hero-profile-card .pc-card {
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 0.718 !important;
   }
 }
 

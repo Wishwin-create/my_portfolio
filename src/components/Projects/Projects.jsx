@@ -2,11 +2,11 @@ import { useInView } from '../../hooks/useInView';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import './Projects.css';
 
-import compassLkImg from '../../assets/projects/compass-lk.png';
-import fotboxingImg from '../../assets/projects/fotboxing-web.png';
-import ecoLearnImg from '../../assets/projects/EcoLearn.png';
-import cineVaultImg from '../../assets/projects/CineVault.png';
-import doNextImg from '../../assets/projects/DoNext.png';
+import compassLkImg from '../../assets/projects/compass-lk.webp';
+import fotboxingImg from '../../assets/projects/fotboxing-web.webp';
+import ecoLearnImg from '../../assets/projects/EcoLearn.webp';
+import cineVaultImg from '../../assets/projects/CineVault.webp';
+import doNextImg from '../../assets/projects/DoNext.webp';
 
 const projects = [
   {
@@ -73,7 +73,14 @@ const Projects = () => {
               style={{ transitionDelay: `${index * 0.1}s` }}
             >
               <div className="project-image-wrapper">
-                <img src={project.image} alt={`${project.title} screenshot`} className="project-image" loading="lazy" />
+                <img
+                  src={project.image}
+                  alt={`${project.title} screenshot`}
+                  className="project-image"
+                  loading="lazy"
+                  width="800"
+                  height="500"
+                />
                 <div className="project-image-overlay">
                   <div className="project-links">
                     {project.github && (

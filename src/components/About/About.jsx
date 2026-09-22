@@ -32,10 +32,9 @@ const About = () => {
   const [logoRef, logoInView] = useInView(0.2);
   const [headingRef, headingInView] = useInView(0.2);
   const [textRef, textInView] = useInView(0.2);
-  // The canvas changes the wrapper's height when it mounts. Observing that
-  // same wrapper with a toggling observer can cause a mobile mount/unmount
-  // loop, which presents as a flicker. Load the scene once when reached.
-  const [charRef, charInView] = useInViewOnce(0.1);
+  // Unmount 3D canvas when scrolled out of view to save GPU cycles & memory.
+  // 200px rootMargin buffer ensures smooth mounting before scroll and prevents flickering.
+  const [charRef, charInView] = useInView(0, '200px 0px 200px 0px');
 
   return (
     <section id="about" className="about-section">

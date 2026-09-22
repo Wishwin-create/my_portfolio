@@ -5,7 +5,7 @@ import Skills from './components/Skills/Skills';
 import Projects from './components/Projects/Projects';
 import Certifications from './components/Certifications/Certifications';
 import Contact from './components/Contact/Contact';
-import moonImage from './moon.png';
+import moonImage from './moon.webp';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Contact />
       </main>
       <div className="portfolio-moon">
-       <img src={moonImage} alt="" />
+       <img src={moonImage} alt="" loading="lazy" width="1600" height="569" />
       </div>
     </div>
   );

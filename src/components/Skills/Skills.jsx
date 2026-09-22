@@ -49,7 +49,7 @@ const skillCategories = [
 
 const Skills = () => {
   const [headingRef, headingInView] = useInView(0.3);
-  const [orbitRef, orbitInView] = useInViewOnce(0.01);
+  const [orbitRef, orbitInView] = useInView(0, '200px 0px 200px 0px');
   const [gridRef, gridInView] = useInViewOnce(0.1);
 
   return (

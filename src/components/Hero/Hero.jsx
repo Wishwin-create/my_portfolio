@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef } from 'react';
 import TextType from '../TextType/TextType';
 import ProfileCard from '../ProfileCard/ProfileCard';
-import avatarImg from '../../assets/my_photo.png';
+import avatarImg from '../../assets/my_photo.webp';
 import SocialLinks from '../SocialLinks/SocialLinks';
 import { useInView } from '../../hooks/useInView';
 import './Hero.css';
