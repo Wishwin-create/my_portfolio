@@ -12,7 +12,7 @@ import cert5img from '../../assets/certs/Web development beginner.webp';
 import cert6Img from '../../assets/certs/JavaScript Essentials 1.webp';
 import cert7Img from '../../assets/certs/Networking Basics.webp';
 
-// Replace with your real certificates and badge images
+
 const certifications = [
   {
     title: 'Python Developer Certificate',
@@ -106,14 +106,15 @@ const StatCard = ({ stat, isActive }) => {
     </div>
   );
 };
+
 const Certifications = () => {
   const [sectionRef, sectionInView] = useInView(0.01);
   const [headingRef, headingInView] = useInView(0.3);
   const [gridRef, gridInView] = useInView(0.01);
 
-  // Which grouping mode is active: 'category' (Subject) or 'issuer' (Institute)
   const [filterMode, setFilterMode] = useState('category');
   const [activeFilter, setActiveFilter] = useState('All');
+  const [showAll, setShowAll] = useState(false);
 
   const filterKey = filterMode === 'category' ? 'category' : 'issuer';
 
@@ -131,9 +132,17 @@ const Certifications = () => {
     return certifications.filter((cert) => cert[filterKey] === activeFilter);
   }, [activeFilter, filterKey]);
 
+  const visibleCerts = showAll ? filteredCerts : filteredCerts.slice(0, 4);
+
   const handleModeSwitch = (mode) => {
     setFilterMode(mode);
-    setActiveFilter('All');   // reset filter selection when switching modes
+    setActiveFilter('All');
+    setShowAll(false);
+  };
+
+  const handleFilterChange = (name) => {
+    setActiveFilter(name);
+    setShowAll(false);
   };
 
   return (
@@ -150,19 +159,16 @@ const Certifications = () => {
           Formally accredited courses and technical specializations with verifiable certificates.
         </p>
 
-      <div className="cert-stats-grid">
-  {stats.map((stat) => (
-    <StatCard
-      key={stat.label}
-      stat={stat}
-      isActive={sectionInView}
-    />
-  ))}
-    </div>
-          
-        
+        <div className="cert-stats-grid">
+          {stats.map((stat) => (
+            <StatCard
+              key={stat.label}
+              stat={stat}
+              isActive={sectionInView}
+            />
+          ))}
+        </div>
 
-        {/* Mode switch: Subject vs Institute */}
         <div className="cert-mode-switch">
           <button
             className={`cert-mode-btn ${filterMode === 'category' ? 'active' : ''}`}
@@ -178,23 +184,22 @@ const Certifications = () => {
           </button>
         </div>
 
-        {/* Filter tabs — reflect whichever mode is active */}
         <div className="cert-filter-tabs-wrapper">
-        <div className="cert-filter-tabs">
-          {categories.map(([name, count]) => (
-            <button
-              key={name}
-              className={`cert-filter-tab ${activeFilter === name ? 'active' : ''}`}
-              onClick={() => setActiveFilter(name)}
-            >
-              {name} <span className="cert-filter-count">{count}</span>
-            </button>
-          ))}
-        </div>
+          <div className="cert-filter-tabs">
+            {categories.map(([name, count]) => (
+              <button
+                key={name}
+                className={`cert-filter-tab ${activeFilter === name ? 'active' : ''}`}
+                onClick={() => handleFilterChange(name)}
+              >
+                {name} <span className="cert-filter-count">{count}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div ref={gridRef} className={`cert-grid ${gridInView ? 'in-view' : ''}`}>
-          {filteredCerts.map((cert, index) => (
+          {visibleCerts.map((cert, index) => (
             <div
               key={cert.title + index}
               className="cert-card-v2"
@@ -235,7 +240,7 @@ const Certifications = () => {
                   <span className="cert-credential-code">ID: {cert.credentialCode}</span>
                 )}
                 {cert.credentialUrl && (
-                  <a
+                  <a 
                     href={cert.credentialUrl}
                     target="_blank"
                     rel="noreferrer noopener"
@@ -248,6 +253,17 @@ const Certifications = () => {
             </div>
           ))}
         </div>
+
+        {filteredCerts.length > 4 && (
+          <div className="cert-view-all-wrapper">
+            <button
+              className="cert-view-all-btn"
+              onClick={() => setShowAll((prev) => !prev)}
+            >
+              {showAll ? 'Show Less' : `View All Certificates (${filteredCerts.length})`}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
