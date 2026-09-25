@@ -22,8 +22,8 @@ const projects = [
     image: fotboxingImg,
     description: 'FOTBOXING is a modern responsive web application developed for the Faculty of Technology, University of Colombo, to promote and showcase the university’s boxing activities. The website provides information about boxing events, athletes, training activities, and the university boxing community through an engaging and user-friendly interface.',
     tags: ['React', 'Vite', 'CSS'],
-    github: 'https://github.com/Wishwin-create/FOTBOXING_WEB',
-    live: 'https://fotboxing-web.vercel.app/',
+    github: 'https://github.com/Wishwin-create/FOTBOXING-WEB.git',
+    live: 'https://fotboxing-web-p2vi.vercel.app/',
   },
   {
     title: 'EcoLearn',
