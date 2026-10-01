@@ -47,7 +47,7 @@ const skillCategories = [
     ],
   },
   {
-    label: 'Cloud & Tools',
+    label: 'Cloud',
     accent: '#ffffff',
     logo: <Cloud size={16} strokeWidth={2.2} />,
     items: [
