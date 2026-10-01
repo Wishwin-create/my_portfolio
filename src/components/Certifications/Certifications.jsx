@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useInView } from '../../hooks/useInView';
 import { useCountUp } from '../../hooks/useCountup';
+import { updateCardSpotlight } from '../../cardSpotlight';
 import { FaAward, FaClock, FaLayerGroup, FaBolt, FaMedal, FaStar, FaCheckCircle } from 'react-icons/fa';
 import './Certifications.css';
 
@@ -99,7 +100,7 @@ const StatCard = ({ stat, isActive }) => {
   const count = useCountUp(stat.target, isActive);
 
   return (
-    <div className="cert-stat-card">
+    <div className="cert-stat-card glow-card" onMouseMove={updateCardSpotlight}>
       <div className="cert-stat-icon">{stat.icon}</div>
       <div className="cert-stat-value">{count}{stat.suffix}</div>
       <div className="cert-stat-label">{stat.label}</div>
@@ -202,8 +203,9 @@ const Certifications = () => {
           {visibleCerts.map((cert, index) => (
             <div
               key={cert.title + index}
-              className="cert-card-v2"
+              className="cert-card-v2 glow-card"
               style={{ transitionDelay: `${index * 0.08}s` }}
+              onMouseMove={updateCardSpotlight}
             >
               <div className="cert-badge-wrapper">
                 {cert.image ? (

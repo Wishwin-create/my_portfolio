@@ -1,4 +1,5 @@
 import { useInView } from '../../hooks/useInView';
+import { updateCardSpotlight } from '../../cardSpotlight';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import './Projects.css';
 
@@ -69,8 +70,9 @@ const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={project.title}
-              className="project-card"
+              className="project-card glow-card"
               style={{ transitionDelay: `${index * 0.1}s` }}
+              onMouseMove={updateCardSpotlight}
             >
               <div className="project-image-wrapper">
                 <img

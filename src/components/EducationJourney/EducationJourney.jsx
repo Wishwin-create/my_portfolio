@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
+import { updateCardSpotlight } from '../../cardSpotlight';
 import './EducationJourney.css';
 import ShardBackground from '../ShardBackground/ShardBackground';
 
@@ -126,7 +127,7 @@ const EducationJourney = () => {
       className={`journey-row ${isLeft ? 'row-left' : 'row-right'} ${index <= activeIndex ? 'active' : ''}`}
     >
       <div className="journey-side card-side">
-        <div className="journey-card">
+        <div className="journey-card glow-card" onMouseMove={updateCardSpotlight}>
           <h4 className="journey-node-title">{item.title}</h4>
           <span className="journey-place">{item.place}</span>
           <ul className="journey-detail-list">

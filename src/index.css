@@ -67,6 +67,75 @@ h1, h2, h3, h4, h5, h6, p {
   object-position: center bottom;
 }
 
+@property --portfolio-glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.glow-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-card::before,
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.glow-card::before {
+  z-index: 0;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(255, 255, 255, 0.14),
+    transparent 70%
+  );
+}
+
+.glow-card::after {
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--portfolio-glow-angle),
+    transparent 0%,
+    rgba(255, 255, 255, 0.9) 12%,
+    transparent 30%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.glow-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glow-card.glow-card:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glow-card:hover::before,
+.glow-card:hover::after {
+  opacity: 1;
+}
+
+.glow-card:hover::after {
+  animation: portfolio-card-spin 4s linear infinite;
+}
+
+@keyframes portfolio-card-spin {
+  to { --portfolio-glow-angle: 360deg; }
+}
+
 @media (max-width: 768px) {
   .portfolio-moon {
     height: 170px;
