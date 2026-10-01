@@ -368,7 +368,8 @@
   }
 
   .skills-card {
-    flex-basis: 82%; /* next card peeks in */
+    flex-basis: 88%; /* keep a small peek at the next card */
+    min-height: 270px;
   }
 
   .skills-carousel-controls {
