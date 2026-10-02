@@ -256,7 +256,7 @@ a.contact-info-item {
   border: 1px solid rgba(255, 80, 80, 0.25);
 }
 .contact-copyright{
-  text-align: left;
+  text-align: center;
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.45);
   margin-top: 2rem;
