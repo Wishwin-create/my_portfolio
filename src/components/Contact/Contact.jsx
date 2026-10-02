@@ -82,6 +82,9 @@ const handleSubmit = async (event) => {
               );
             })}
             <SocialLinks />
+            <p className="contact-copyright">
+            © {new Date().getFullYear()} Wishwin Gesara. All rights reserved.
+            </p>
           </div>
           <form className="contact-form" onSubmit={handleSubmit}>
             <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />

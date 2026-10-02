@@ -255,6 +255,12 @@ a.contact-info-item {
   color: rgba(255, 150, 150, 0.9);
   border: 1px solid rgba(255, 80, 80, 0.25);
 }
+.contact-copyright{
+  text-align: left;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 2rem;
+}
 
 @media (max-width: 768px) {
   .contact-section {
