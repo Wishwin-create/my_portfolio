@@ -12,7 +12,7 @@ import cert4Img from '../../assets/certs/Python Programming beginner.webp';
 import cert5img from '../../assets/certs/Web development beginner.webp';  
 import cert6Img from '../../assets/certs/JavaScript Essentials 1.webp';
 import cert7Img from '../../assets/certs/Networking Basics.webp';
-import cert8Img from '../../assets/certs/Github Foundations.webp';
+import cert8Img from '../../assets/certs/GitHub Foundations.webp';
 
 
 const certifications = [
