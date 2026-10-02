@@ -12,6 +12,7 @@ import cert4Img from '../../assets/certs/Python Programming beginner.webp';
 import cert5img from '../../assets/certs/Web development beginner.webp';  
 import cert6Img from '../../assets/certs/JavaScript Essentials 1.webp';
 import cert7Img from '../../assets/certs/Networking Basics.webp';
+import cert8Img from '../../assets/certs/Github Foundations.webp';
 
 
 const certifications = [
@@ -83,6 +84,16 @@ const certifications = [
     credentialCode: '',
     hours: 20,
   },
+  {
+    title : 'Github Foundations',
+    issuer : 'DataCamp',
+    category : 'Version Control',
+    featured : true,
+    image : cert8Img,
+    credentialUrl : 'https://www.datacamp.com/completed/statement-of-accomplishment/track/249bc75fdbe69de9608aae86a81a4783af61bcbf?utm_medium=organic_social&utm_campaign=sharewidget&utm_content=soa',
+    credentialCode : '',
+    hours : 9,
+  }
 ];
 
 const totalHours = certifications.reduce((sum, cert) => sum + (cert.hours || 0), 0);
