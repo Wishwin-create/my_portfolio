@@ -10,7 +10,6 @@ import { TbLetterC } from 'react-icons/tb';
 import { Monitor, Server, Database, Cloud } from 'lucide-react';
 import './Skills.css';
 
-// Defer the largest interactive scene until the skills section is approached.
 const SkillsOrbit3D = lazy(() => import('../SkillsOrbit3D/SkillsOrbit3D'));
 
 const skillCategories = [
@@ -56,6 +55,11 @@ const skillCategories = [
   },
 ];
 
+// Three copies back-to-back: [clone][real][clone] — lets us scroll "past the end"
+// into a clone, then silently snap back to the matching spot in the real set.
+const LOOPED_CATEGORIES = [...skillCategories, ...skillCategories, ...skillCategories];
+const SET_COUNT = skillCategories.length;
+
 const Skills = () => {
   const [headingRef, headingInView] = useInView(0.3);
   const [orbitRef, orbitInView] = useInView(0, '200px 0px 200px 0px');
@@ -63,46 +67,71 @@ const Skills = () => {
 
   const trackRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
+  const isJumpingRef = useRef(false);
+
+  const getStep = useCallback(() => {
+    const track = trackRef.current;
+    const card = track?.querySelector('.skills-card');
+    if (!track || !card) return 0;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    return card.offsetWidth + gap;
+  }, []);
+
+  // Start scrolled into the MIDDLE copy, so there's room to scroll both directions.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const step = getStep();
+    track.scrollLeft = step * SET_COUNT;
+  }, [getStep]);
 
   const updateScrollState = useCallback(() => {
     const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector('.skills-card');
-    if (!card) return;
+    if (!track || isJumpingRef.current) return;
+    const step = getStep();
+    if (!step) return;
 
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    const step = card.offsetWidth + gap;
+    const rawIndex = Math.round(track.scrollLeft / step);
+    setActiveIndex(((rawIndex % SET_COUNT) + SET_COUNT) % SET_COUNT);
 
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    const atEnd = track.scrollLeft >= maxScroll - 4;
+    const minSafe = step * SET_COUNT;
+    const maxSafe = step * SET_COUNT * 2;
 
-    setActiveIndex(
-      atEnd ? skillCategories.length - 1 : Math.round(track.scrollLeft / step)
-    );
-    setCanPrev(track.scrollLeft > 4);
-    setCanNext(!atEnd);
-  }, []);
+    if (track.scrollLeft < minSafe) {
+      isJumpingRef.current = true;
+      track.scrollLeft += step * SET_COUNT;
+      requestAnimationFrame(() => { isJumpingRef.current = false; });
+    } else if (track.scrollLeft > maxSafe) {
+      isJumpingRef.current = true;
+      track.scrollLeft -= step * SET_COUNT;
+      requestAnimationFrame(() => { isJumpingRef.current = false; });
+    }
+  }, [getStep]);
 
   useEffect(() => {
     updateScrollState();
-    window.addEventListener('resize', updateScrollState);
-    return () => window.removeEventListener('resize', updateScrollState);
-  }, [updateScrollState]);
+    const handleResize = () => {
+      const track = trackRef.current;
+      if (track) track.scrollLeft = getStep() * SET_COUNT;
+      updateScrollState();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [updateScrollState, getStep]);
 
   const scrollByCard = (direction) => {
     const track = trackRef.current;
-    const card = track?.querySelector('.skills-card');
-    if (!card) return;
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    track.scrollBy({ left: direction * (card.offsetWidth + gap), behavior: 'smooth' });
+    if (!track) return;
+    const step = getStep();
+    track.scrollBy({ left: direction * step, behavior: 'smooth' });
   };
 
   const scrollToIndex = (i) => {
-    const cards = trackRef.current?.querySelectorAll('.skills-card');
-    // block: 'nearest' stops the page itself from jumping vertically
-    cards?.[i]?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    const track = trackRef.current;
+    if (!track) return;
+    const step = getStep();
+    // Always target the matching card inside the MIDDLE set, so direction stays natural.
+    track.scrollTo({ left: step * (SET_COUNT + i), behavior: 'smooth' });
   };
 
   const handleSpotlight = (e) => {
@@ -131,7 +160,6 @@ const Skills = () => {
             <button
               className="skills-arrow"
               onClick={() => scrollByCard(-1)}
-              disabled={!canPrev}
               aria-label="Previous category"
             >
               <FaChevronLeft />
@@ -139,7 +167,6 @@ const Skills = () => {
             <button
               className="skills-arrow"
               onClick={() => scrollByCard(1)}
-              disabled={!canNext}
               aria-label="Next category"
             >
               <FaChevronRight />
@@ -153,12 +180,12 @@ const Skills = () => {
             tabIndex={0}
             aria-label="Skill categories"
           >
-            {skillCategories.map((category, catIndex) => (
+            {LOOPED_CATEGORIES.map((category, idx) => (
               <div
-                key={category.label}
+                key={`${category.label}-${idx}`}
                 className="skills-card"
                 style={{
-                  transitionDelay: `${catIndex * 0.1}s`,
+                  transitionDelay: `${(idx % SET_COUNT) * 0.1}s`,
                   '--accent': category.accent,
                 }}
                 onMouseMove={handleSpotlight}
