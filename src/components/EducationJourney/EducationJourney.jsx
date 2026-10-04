@@ -23,7 +23,7 @@ const milestones = [
   {
     year: '2023',
     title: 'Diploma in English Language',
-    place: "Sri Lanka English Language Graduates/' Association (SLEGA)",
+    place: "Sri Lanka English Language Graduates' Association (SLEGA)",
     logo: slegaLogo,
     detail: [
       'Completed a comprehensive English language program, enhancing communication skills.',
