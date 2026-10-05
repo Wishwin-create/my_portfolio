@@ -20,9 +20,11 @@ const Contact = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   setStatus('sending');
+  console.log('endpoint:', import.meta.env.VITE_FORMSPREE_ENDPOINT);
 
   const form = event.currentTarget; 
   const formData = new FormData(event.currentTarget);
+  
 //api key is stored in .env file and accessed using import.meta.env.VITE_FORMSPREE_ENDPOINT
   try {
     const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
@@ -107,8 +109,11 @@ const handleSubmit = async (event) => {
             <button className="contact-submit-btn" type="submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Sending...' : (
                 <>Send Message <FaPaperPlane aria-hidden="true" /></>
+                
               )}
+
             </button>
+            
             {status === 'error' && (
               <p className="contact-status contact-status-error" role="status">
                 Something went wrong — please email me directly instead.
