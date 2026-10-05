@@ -23,7 +23,7 @@ const handleSubmit = async (event) => {
 
   const form = event.currentTarget; 
   const formData = new FormData(event.currentTarget);
-
+//api key is stored in .env file and accessed using import.meta.env.VITE_FORMSPREE_ENDPOINT
   try {
     const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
       method: 'POST',
