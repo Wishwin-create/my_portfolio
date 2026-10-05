@@ -20,7 +20,7 @@ const Contact = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
   setStatus('sending');
-  console.log('endpoint:', import.meta.env.VITE_FORMSPREE_ENDPOINT);
+  
 
   const form = event.currentTarget; 
   const formData = new FormData(event.currentTarget);
