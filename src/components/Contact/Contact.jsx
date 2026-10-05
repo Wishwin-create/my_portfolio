@@ -25,7 +25,7 @@ const handleSubmit = async (event) => {
   const formData = new FormData(event.currentTarget);
 
   try {
-    const response = await fetch('https://formspree.io/f/mjykyrjz', {
+    const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
       method: 'POST',
       body: formData,
       headers: { Accept: 'application/json' },
