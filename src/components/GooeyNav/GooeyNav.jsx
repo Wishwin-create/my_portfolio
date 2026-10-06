@@ -191,6 +191,50 @@ const GooeyNav = ({
       }
     }
   }, [isMobileOpen, activeIndex]);
+  useEffect(() => {
+  // Build a list of { index, sectionEl } by matching each nav item's href (#id) to its section
+  const sectionEntries = items
+    .map((item, index) => {
+      const id = item.href?.replace('#', '');
+      const el = id ? document.getElementById(id) : null;
+      return el ? { index, el } : null;
+    })
+    .filter(Boolean);
+
+  if (sectionEntries.length === 0) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      // Find the entry that's most visible right now
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+      if (visible.length > 0) {
+        const matched = sectionEntries.find((s) => s.el === visible[0].target);
+        if (matched && matched.index !== activeIndex) {
+          setActiveIndex(matched.index);
+
+          // Reposition the highlight pill WITHOUT triggering the particle burst
+          const activeLi = navRef.current?.querySelectorAll('li')[matched.index];
+          if (activeLi) {
+            updateEffectPosition(activeLi);
+          }
+        }
+      }
+    },
+    {
+      // Section counts as "active" once it crosses roughly the middle of the viewport
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0,
+    }
+  );
+
+  sectionEntries.forEach(({ el }) => observer.observe(el));
+
+  return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [items]);
 
   return (
     <div className="gooey-nav-container" ref={containerRef}>
