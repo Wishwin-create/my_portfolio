@@ -212,8 +212,16 @@ const GooeyNav = ({
 
       if (visible.length > 0) {
         const matched = sectionEntries.find((s) => s.el === visible[0].target);
-        if (matched && matched.index !== activeIndex) {
-          setActiveIndex(matched.index);
+        if (matched) {
+          // Use the state setter's current value instead of the activeIndex
+          // captured when this observer was created. Otherwise, returning to
+          // the first section can be ignored because this effect initially
+          // captured activeIndex === 0.
+          setActiveIndex(currentIndex => {
+            if (currentIndex === matched.index) return currentIndex;
+
+            return matched.index;
+          });
 
           // Reposition the highlight pill WITHOUT triggering the particle burst
           const activeLi = navRef.current?.querySelectorAll('li')[matched.index];
