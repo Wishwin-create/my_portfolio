@@ -92,7 +92,7 @@ const About = () => {
 
           {/*Download CV button */}
           <a
-            href="/resume.pdf"
+            href="/Wisvin_Gesara_resume.pdf"
             download
             className={`about-cv-button ${textInView ? 'in-view' : ''}`}
           >
